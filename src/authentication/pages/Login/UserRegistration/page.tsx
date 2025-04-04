@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import { InputMask } from '@react-input/mask';
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
+import Header from '@/authentication/components/layout/Header';
+import Footer from '@/authentication/components/layout/Footer';
 
 export default function UserRegistration() {
   const [form, setForm] = useState({

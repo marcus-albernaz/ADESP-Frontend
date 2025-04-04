@@ -1,5 +1,5 @@
 // components/navbar.tsx
-import logo from "../../../public/Logo_Festival1.png";
+import logo from "/Logo_Festival1.png";
 
 export const Header = () => {
   return (

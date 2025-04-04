@@ -1,4 +1,4 @@
-import sponsors from "../../../public/Patrocinadores.png"
+import sponsors from "/Patrocinadores.png"
 
 
 export const Footer = () => {

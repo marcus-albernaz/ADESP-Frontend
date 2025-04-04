@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import { Button } from "@heroui/button";
-import Header from '@/components/layout/Header';
-import Rodape from '@/components/layout/Footer';
+import Header from '@/authentication/components/layout/Header';
+import Rodape from '@/authentication/components/layout/Footer';
 
 export default function NewPasswordPage() {
   const [newPassword, setNewPassword] = useState('');
