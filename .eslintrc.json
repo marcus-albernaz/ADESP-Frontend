@@ -9,10 +9,9 @@
     "plugin:react/recommended",
     "plugin:prettier/recommended",
     "plugin:react-hooks/recommended",
-    "plugin:jsx-a11y/recommended",
-    "plugin:@next/next/recommended"
+    "plugin:jsx-a11y/recommended"
   ],
-  "plugins": ["react", "unused-imports", "import", "@typescript-eslint", "jsx-a11y", "prettier"],
+  "plugins": ["react", "unused-imports", "import", "@typescript-eslint", "jsx-a11y", "prettier", "@stylistic/js': stylisticJs"],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaFeatures": {
@@ -38,6 +37,8 @@
     "no-unused-vars": "off",
     "unused-imports/no-unused-vars": "off",
     "unused-imports/no-unused-imports": "warn",
+    "@stylistic/js/indent": ["error", 2],
+    "@stylistic/js/quotes": ["error", "double"],
     "@typescript-eslint/no-unused-vars": [
       "warn",
       {
