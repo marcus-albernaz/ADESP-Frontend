@@ -1,50 +1,46 @@
-import ForgotPassword from "@/authentication/components/layout/ForgotPassword";
-import InactiveUserMessage from "@/authentication/components/layout/invalidUser";
-import {
-  SuccessMessage,
-  ErrorMessage,
-} from "@/authentication/components/layout/showMessages";
 import Header from "@/authentication/components/layout/Header";
 import { useState } from "react";
 import Footer from "@/authentication/components/layout/Footer";
 import banner from "/Banner_Principal.png";
 import { Input } from "@heroui/input";
-import { Eye, EyeClosed, EyeOffIcon } from "lucide-react";
+import { Eye, EyeOffIcon } from "lucide-react";
 import { Button } from "@heroui/button";
-import AppModal from "@/shared/components/AppModal";
+import AppModal from "@/core/components/AppModal";
 import { useDisclosure } from "@heroui/modal";
+import {Alert} from "@heroui/alert";
+import { useForm } from "react-hook-form"
+import { LoginRequest } from "@/authentication/types";
+import { useAuth } from "@/authentication/contexts/AuthContext";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
-  const [showForgotPassword, setShowForgotPassword] = useState(false);
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-  const [showErrorMessage, setShowErrorMessage] = useState(false);
-  const [showInactiveMessage, setShowInactiveMessage] = useState(false);
+  const [passwordFieldType, setPasswordFieldType] = useState('password');
+  const [invalidCredentialsMessage, setInvalidCredentialsMessage] = useState(false);
+  const [ error, setError ] = useState({title: "", message: ""});
 
-  const togglePassword = () => setShowPassword(!showPassword);
-  const handleForgotPassword = () => setShowForgotPassword(!showPassword);
-  const handleCancelForgotPassword = () => setShowForgotPassword(false);
-  const handleAcknowledged = () => setShowForgotPassword(false);
-  //const router = useRouter();
   const {isOpen, onOpen, onOpenChange} = useDisclosure();
 
-  const handleLogin = (event: React.FormEvent) => {
-    event.preventDefault();
-    const isValidLogin = Math.random() > 0.5;
+  const { register, handleSubmit } = useForm<LoginRequest>();
+  const authentication = useAuth();
 
-    if (isValidLogin) {
-      setShowSuccessMessage(true);
-      setShowErrorMessage(false);
-    } else {
-      setShowErrorMessage(true);
-      setShowSuccessMessage(false);
-    }
+  const handleErrorMessages = (message: string) => {
+    setError({title: "Algo deu errado!", message: message})
+    setInvalidCredentialsMessage(true);
+  }
+
+  const onLoginSubmit = (data: LoginRequest) => {
+    authentication?.login(data, handleErrorMessages);
   };
+
+  const togglePassword = () => {
+    setShowPassword(!showPassword);
+    passwordFieldType === 'password' ? setPasswordFieldType('text') : setPasswordFieldType('password')
+  }
 
   return (
     <div className="flex flex-col min-h-screen relative bg-[#2B1E49]">
       <Header />
-      <div className="flex-grow flex items-center justify-center bg-[#2A1E48]">
+      <div className="flex-grow flex items-center justify-center">
         <div className="w-full max-w-md p-8 rounded-2xl">
           <div className="flex justify-center mb-6">
             <img
@@ -53,8 +49,7 @@ export default function LoginPage() {
               className="w-full h-auto object-contain sm:w-3/4 md:w-full"
             />
           </div>
-
-          <form className="flex flex-col gap-4" onSubmit={handleLogin}>
+          <form id="loginform" className="flex flex-col gap-4" onSubmit={handleSubmit(onLoginSubmit)}>
             <div className="flex flex-col gap-2">
               <div className="flex flex-col gap-4">
                 <Input
@@ -66,18 +61,21 @@ export default function LoginPage() {
                   radius="none"
                   color="default"
                   isRequired
+                  maxLength={64}
+                  {...register('login')}
                 />
                 <Input
                   label="Senha"
                   placeholder="Digite aqui..."
-                  type="password"
+                  type={passwordFieldType}
                   variant="flat"
                   size="sm"
                   radius="none"
                   color="default"
                   isRequired
+                  {...register('password')}
                   endContent={
-                    <button onClick={() => setShowPassword(!showPassword)}>
+                    <button onClick={togglePassword} type="button">
                       {showPassword ? <Eye /> : <EyeOffIcon />}
                     </button>
                   }
@@ -94,12 +92,23 @@ export default function LoginPage() {
               </div>
             </div>
 
-            <button
+            <Button
               type="submit"
-              className="w-full bg-[#FD0078] text-white p-2 rounded-lg hover:bg-pink-700"
+              className="w-full bg-[#FD0078] text-white"
+              radius='none'
+              size='md'
+              form="loginform"
             >
               Entrar
-            </button>
+            </Button>
+            <Alert
+              hideIconWrapper
+              color='danger'
+              description={error.message}
+              title='Algo deu errado!'
+              variant='faded'
+              isVisible={invalidCredentialsMessage}
+            />
           </form>
         </div>
         <AppModal
@@ -122,27 +131,11 @@ export default function LoginPage() {
           }
           isOpen={isOpen}
           onOpenChange={onOpenChange}
-        >
-          
-        </AppModal>
+        />
+
       </div>
 
       <Footer />
-      {showSuccessMessage && (
-        <SuccessMessage
-          message="Login realizado com sucesso!"
-          onClose={() => setShowSuccessMessage(false)}
-        />
-      )}
-      {showErrorMessage && (
-        <ErrorMessage
-          message="Erro ao realizar login. Tente novamente."
-          onClose={() => setShowErrorMessage(false)}
-        />
-      )}
-      {showInactiveMessage && (
-        <InactiveUserMessage onClose={() => setShowInactiveMessage(false)} />
-      )}
     </div>
   );
 }

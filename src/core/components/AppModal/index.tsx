@@ -1,4 +1,4 @@
-import ModalPropTypes from "@/shared/types/ModalPropTypes";
+import ModalPropTypes from "@/core/types/ModalPropTypes";
 import { Button } from "@heroui/button";
 import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from "@heroui/modal";
 
@@ -13,7 +13,7 @@ export default function AppModal({ variant, isOpen, onOpenChange, onOpen, title,
                             <>
                                 <ModalHeader>{ title }</ModalHeader>
                                 <ModalBody>
-                                    <form name="modal-form">
+                                    <form id="modal-form" className='flex flex-col gap-2'>
                                         { body }
                                     </form>
                                 </ModalBody>
