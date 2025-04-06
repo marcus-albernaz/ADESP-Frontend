@@ -1,0 +1,219 @@
+import { Button } from "@heroui/button";
+import { Input } from "@heroui/input";
+import { SignUpRequest } from "../types";
+import { useForm } from "react-hook-form";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import festivalApi from "@/core/api/api";
+import { useEffect, useState } from "react";
+import InvalidInvite from "./InvalidInvite";
+import { Eye, EyeOffIcon } from "lucide-react";
+import AppModal from "@/core/components/AppModal";
+import { useDisclosure } from "@heroui/modal";
+
+export default function SignUpForm() {
+  const { register, handleSubmit } = useForm<SignUpRequest>();
+  const [showPassword, setShowPassword] = useState(false);
+  const [passwordFieldType, setPasswordFieldType] = useState("password");
+  const [showConfirmationPassword, setShowConfirmationPassword] = useState(false);
+  const [confirmationPasswordFieldType, setConfirmationPasswordFieldType] = useState("password");
+  const [isSubmitButtonLoading, setSubmitButtonLoading] = useState(false);
+  const [isInviteTokenValid, setInviteTokenValid] = useState(false);
+  const [destinationEmail, setDestinationEmail] = useState("");
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+
+  const handleSignUpFormSubmit = async (data: SignUpRequest) => {
+    setSubmitButtonLoading(true);
+    data.inviteToken = searchParams.get("token");
+    await festivalApi.post("/v1/auth/signup", data);
+    setSubmitButtonLoading(false);
+  };
+
+  const togglePassword = () => {
+    setShowPassword(!showPassword);
+    passwordFieldType === "password"
+      ? setPasswordFieldType("text")
+      : setPasswordFieldType("password");
+  };
+
+  const toggleConfirmationPassword = () => {
+    setShowConfirmationPassword(!showConfirmationPassword);
+    confirmationPasswordFieldType === "password"
+      ? setConfirmationPasswordFieldType("text")
+      : setConfirmationPasswordFieldType("password");
+  };
+
+  const handleCancelButtonClick = () => {
+    navigate("/auth/signin");
+  }
+
+  useEffect(() => {
+    if (searchParams.get("token") === null) {
+      setInviteTokenValid(false);
+    }
+
+    festivalApi
+      .get(
+        `/v1/auth/signup/verify-invite?inviteToken=${searchParams.get("token")}`
+      )
+      .then((response) => {
+        if (response.status === 200) {
+          setInviteTokenValid(true);
+        }
+
+        setDestinationEmail(response.data.email);
+      });
+  }, []);
+
+  if (isInviteTokenValid) {
+    return (
+      <form
+        className="flex flex-col gap-4"
+        onSubmit={handleSubmit(handleSignUpFormSubmit)}
+      >
+        <div className="flex flex-col gap-4 mb-4">
+          <h1 className="text-[#FF5B0B] text-xl font-bold">Criar Conta</h1>
+          <p className="text-white text-md">
+            Vimos que você possui um convite válido. <br />
+            Preencha os campos abaixo e crie a sua conta.
+          </p>
+        </div>
+        <div className="flex flex-col gap-2">
+          <Input
+            variant="flat"
+            size="sm"
+            radius="none"
+            label="E-mail"
+            defaultValue={destinationEmail}
+            type="text"
+            color="success"
+            disabled
+            isRequired
+          />
+          <Input
+            variant="flat"
+            size="sm"
+            radius="none"
+            label="Nome"
+            placeholder="Digite aqui..."
+            type="text"
+            color="default"
+            isRequired
+            {...register("name")}
+            validate={(value) => {
+
+              if(value.length === 0){
+                return "O Nome é obrigatório."
+              }
+
+              if(value.length < 3){
+                return "O nome precisa ter mais de 3 caracteres"
+              }
+            }}
+          />
+          <Input
+            variant="flat"
+            size="sm"
+            radius="none"
+            label="CPF (Apenas Números)"
+            placeholder="Digite aqui..."
+            type="text"
+            color="default"
+            isRequired
+            {...register("cpf")}
+            validate={(value) => {
+              if(value.length === 0){
+                return "O CPF é obrigatório."
+              }
+
+              if(value.length < 11 || value.length > 14){
+                return "O CPF digitado é invalido."
+              }
+
+              if(!value.match(/[\d]{11}$/gm)){
+                return "O CPF deve conter apenas números."
+              }
+            }}
+            maxLength={14}
+            minLength={11}
+          />
+          <Input
+            variant="flat"
+            size="sm"
+            radius="none"
+            label="Nome de Usuário"
+            placeholder="Digite aqui..."
+            type="text"
+            color="default"
+            isRequired
+            {...register("username")}
+            maxLength={24}
+            minLength={3}
+            validate={(value) => {
+              if(value.length === 0){
+                return "O Nome de Usuário é obrigatório."
+              }
+
+              if(value.length < 3){
+                return "O Nome de Usuário é Inválido"
+              }
+
+              if(!value.match(/^[a-zA-Z0-9_-]{0,24}$/gm)){
+                return "O Nome de Usuário não pode conter caracteres especiais."
+              }
+            }}
+          />
+          <Input
+            label="Senha"
+            placeholder="Digite aqui..."
+            type={passwordFieldType}
+            variant="flat"
+            size="sm"
+            radius="none"
+            color="default"
+            isRequired
+            endContent={
+              <button onClick={togglePassword} type="button">
+                {showPassword ? <Eye /> : <EyeOffIcon />}
+              </button>
+            }
+          />
+          <Input
+            label="Confirmação da Senha"
+            placeholder="Digite aqui..."
+            type={confirmationPasswordFieldType}
+            variant="flat"
+            size="sm"
+            radius="none"
+            color="default"
+            isRequired
+            {...register("password")}
+            endContent={
+              <button onClick={toggleConfirmationPassword} type="button">
+                {showConfirmationPassword ? <Eye /> : <EyeOffIcon />}
+              </button>
+            }
+          />
+        </div>
+        <Button
+          className="bg-[#FD0078] text-white"
+          variant="solid"
+          size="md"
+          radius="none"
+          type="submit"
+          isLoading={isSubmitButtonLoading}
+        >
+          Cadastrar-me
+        </Button>
+        <Button variant="solid" size="md" radius="none" onPress={handleCancelButtonClick}>
+          Cancelar
+        </Button>
+        <AppModal isOpen={true} onOpenChange={onOpenChange} onClose={onClose} title="Title" body={null} isFormSubmitLoading={false} variant="success"/>
+      </form>
+    );
+  }
+  if (!isInviteTokenValid) {
+    return <InvalidInvite />;
+  }
+}
