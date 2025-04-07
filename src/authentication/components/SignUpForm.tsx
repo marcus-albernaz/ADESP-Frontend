@@ -4,7 +4,7 @@ import { SignUpRequest } from "../types";
 import { useForm } from "react-hook-form";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import festivalApi from "@/core/api/api";
-import { useEffect, useState } from "react";
+import { EventHandler, useEffect, useState } from "react";
 import InvalidInvite from "./InvalidInvite";
 import { Eye, EyeOffIcon } from "lucide-react";
 import AppModal from "@/core/components/AppModal";
@@ -14,11 +14,15 @@ export default function SignUpForm() {
   const { register, handleSubmit } = useForm<SignUpRequest>();
   const [showPassword, setShowPassword] = useState(false);
   const [passwordFieldType, setPasswordFieldType] = useState("password");
-  const [showConfirmationPassword, setShowConfirmationPassword] = useState(false);
-  const [confirmationPasswordFieldType, setConfirmationPasswordFieldType] = useState("password");
+  const [showConfirmationPassword, setShowConfirmationPassword] =
+    useState(false);
+  const [confirmationPasswordFieldType, setConfirmationPasswordFieldType] =
+    useState("password");
   const [isSubmitButtonLoading, setSubmitButtonLoading] = useState(false);
   const [isInviteTokenValid, setInviteTokenValid] = useState(false);
   const [destinationEmail, setDestinationEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmationPassword,setConfirmationPassword] = useState("");
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
@@ -28,7 +32,21 @@ export default function SignUpForm() {
     data.inviteToken = searchParams.get("token");
     await festivalApi.post("/v1/auth/signup", data);
     setSubmitButtonLoading(false);
+    onOpen();
   };
+
+  const handleSignUpSuccessMessage = () => {
+    onClose();
+    navigate("/auth/signin");
+  }
+
+  const updatePassword = (value: string) => {
+    setPassword(value);
+  }
+
+  const updateConfirmationPassword = (value: string) => {
+    setConfirmationPassword(value);
+  }
 
   const togglePassword = () => {
     setShowPassword(!showPassword);
@@ -46,7 +64,7 @@ export default function SignUpForm() {
 
   const handleCancelButtonClick = () => {
     navigate("/auth/signin");
-  }
+  };
 
   useEffect(() => {
     if (searchParams.get("token") === null) {
@@ -102,13 +120,12 @@ export default function SignUpForm() {
             isRequired
             {...register("name")}
             validate={(value) => {
-
-              if(value.length === 0){
-                return "O Nome é obrigatório."
+              if (value.length === 0) {
+                return "O Nome é obrigatório.";
               }
 
-              if(value.length < 3){
-                return "O nome precisa ter mais de 3 caracteres"
+              if (value.length < 3) {
+                return "O nome precisa ter mais de 3 caracteres";
               }
             }}
           />
@@ -123,16 +140,16 @@ export default function SignUpForm() {
             isRequired
             {...register("cpf")}
             validate={(value) => {
-              if(value.length === 0){
-                return "O CPF é obrigatório."
+              if (value.length === 0) {
+                return "O CPF é obrigatório.";
               }
 
-              if(value.length < 11 || value.length > 14){
-                return "O CPF digitado é invalido."
+              if (value.length < 11 || value.length > 14) {
+                return "O CPF digitado é invalido.";
               }
 
-              if(!value.match(/[\d]{11}$/gm)){
-                return "O CPF deve conter apenas números."
+              if (!value.match(/[\d]{11}$/gm)) {
+                return "O CPF deve conter apenas números.";
               }
             }}
             maxLength={14}
@@ -151,16 +168,16 @@ export default function SignUpForm() {
             maxLength={24}
             minLength={3}
             validate={(value) => {
-              if(value.length === 0){
-                return "O Nome de Usuário é obrigatório."
+              if (value.length === 0) {
+                return "O Nome de Usuário é obrigatório.";
               }
 
-              if(value.length < 3){
-                return "O Nome de Usuário é Inválido"
+              if (value.length < 3) {
+                return "O Nome de Usuário é Inválido";
               }
 
-              if(!value.match(/^[a-zA-Z0-9_-]{0,24}$/gm)){
-                return "O Nome de Usuário não pode conter caracteres especiais."
+              if (!value.match(/^[a-zA-Z0-9_-]{0,24}$/gm)) {
+                return "O Nome de Usuário não pode conter caracteres especiais.";
               }
             }}
           />
@@ -178,6 +195,12 @@ export default function SignUpForm() {
                 {showPassword ? <Eye /> : <EyeOffIcon />}
               </button>
             }
+            validate={(value) => {
+              if(!value.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/gm)){
+                return "A Senha precisa conter ao menos uma letra maíuscula, uma minúscula e um número."
+              }
+            }}
+            onValueChange={updatePassword}
           />
           <Input
             label="Confirmação da Senha"
@@ -194,6 +217,14 @@ export default function SignUpForm() {
                 {showConfirmationPassword ? <Eye /> : <EyeOffIcon />}
               </button>
             }
+            validate={(value) => {
+              if(!(password === confirmationPassword)){
+                console.log("Atual:", password);
+                console.log("Comp:", confirmationPassword);
+                return "As Senhas não conferem!";
+              }
+            }}
+            onValueChange={updateConfirmationPassword}
           />
         </div>
         <Button
@@ -206,10 +237,25 @@ export default function SignUpForm() {
         >
           Cadastrar-me
         </Button>
-        <Button variant="solid" size="md" radius="none" onPress={handleCancelButtonClick}>
+        <Button
+          variant="solid"
+          size="md"
+          radius="none"
+          onPress={handleCancelButtonClick}
+        >
           Cancelar
         </Button>
-        <AppModal isOpen={true} onOpenChange={onOpenChange} onClose={onClose} title="Title" body={null} isFormSubmitLoading={false} variant="success"/>
+        <AppModal
+          isOpen={isOpen}
+          onOpenChange={onOpenChange}
+          onClose={onClose}
+          title="Sua conta foi cadastrada!"
+          message="Agora você possui um acesso em nossa plataforma. Vá para a tela de login e acesse o sistema com suas credenciais."
+          buttonText="Ir para a Página de Login!"
+          isFormSubmitLoading={false}
+          variant="success"
+          modalAction={handleSignUpSuccessMessage}
+        />
       </form>
     );
   }

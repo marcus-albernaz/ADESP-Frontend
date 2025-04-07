@@ -20,7 +20,7 @@ export default function LoginPage() {
               className="w-full h-auto object-contain sm:w-3/4 md:w-full"
             />
           </div>
-          <LoginForm onOpen={onOpen} openAction={(onOpen: () => void) => {onOpen()}}/>
+          <LoginForm onOpen={onOpen} openAction={onOpen}/>
           <RecoveryForm isOpen={isOpen} onOpenChange={onOpenChange} onClose={onClose}/>
         </div>
       </div>

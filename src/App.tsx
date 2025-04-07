@@ -16,7 +16,7 @@ const ProtectedRoute = () => {
 const PrivateRoute = () => {
   const authenticated = useAuth();
   
-  if(!authenticated) return <Navigate to="/login" replace/>
+  if(!authenticated?.accessToken) return <Navigate to="/auth/signin" replace/>
 
   return (
     <Outlet/>

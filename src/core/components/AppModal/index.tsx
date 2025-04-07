@@ -28,6 +28,9 @@ export default function AppModal({
   title,
   body,
   onClose,
+  buttonText,
+  message,
+  modalAction
 }: ModalPropTypes) {
   if (variant === "form") {
     return (
@@ -80,7 +83,7 @@ export default function AppModal({
                 <ModalHeader>{title}</ModalHeader>
                 <ModalBody className="flex justify-center items-center gap-4">
                   <SuccessComponent />
-                  <h1></h1>
+                  <p>{message}</p>
                 </ModalBody>
                 <ModalFooter>
                   <div className="w-full flex justify-center items-center gap-4">
@@ -91,18 +94,9 @@ export default function AppModal({
                       variant="solid"
                       type="submit"
                       form="modal-form"
-                      isLoading={isFormSubmitLoading}
+                      onPress={modalAction}
                     >
-                      Salvar
-                    </Button>
-                    <Button
-                      className="w-full"
-                      size="md"
-                      radius="sm"
-                      variant="solid"
-                      onPress={onClose}
-                    >
-                      Cancelar
+                      {buttonText}
                     </Button>
                   </div>
                 </ModalFooter>
