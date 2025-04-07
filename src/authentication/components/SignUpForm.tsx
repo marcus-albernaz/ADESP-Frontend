@@ -219,8 +219,6 @@ export default function SignUpForm() {
             }
             validate={(value) => {
               if(!(password === confirmationPassword)){
-                console.log("Atual:", password);
-                console.log("Comp:", confirmationPassword);
                 return "As Senhas não conferem!";
               }
             }}
