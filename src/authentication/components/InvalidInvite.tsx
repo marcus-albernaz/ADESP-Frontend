@@ -7,8 +7,8 @@ export default function InvalidInvite() {
         <div className="flex justify-center">
             <img src={emptyMail}></img>
         </div>
-        <h1 className='text-white text-bold text-xl font-bold text-center'>Há um problema com o seu convite!</h1>
-        <p className='text-white text-md text-start'>Ei, detectamos que seu convite não é valido! Caso ele tenha vencido, solicite um novo convite para um Administrador.</p>
+        <h1 className='text-white text-bold text-2xl font-bold text-center font-title'>Há um problema com o seu convite!</h1>
+        <p className='text-white text-md text-start font-body'>Ei, detectamos que seu convite não é valido! Caso ele tenha vencido, solicite um novo convite para um Administrador.</p>
         <Button
             color='default'
             radius='none'

@@ -90,9 +90,9 @@ export default function SignUpForm() {
         className="flex flex-col gap-4"
         onSubmit={handleSubmit(handleSignUpFormSubmit)}
       >
-        <div className="flex flex-col gap-4 mb-4">
-          <h1 className="text-[#FF5B0B] text-xl font-bold">Criar Conta</h1>
-          <p className="text-white text-md">
+        <div className="flex flex-col gap-2">
+          <h1 className="text-[#FF5B0B] text-2xl font-bold font-title">Criar Conta</h1>
+          <p className="text-white text-md font-body">
             Vimos que você possui um convite válido. <br />
             Preencha os campos abaixo e crie a sua conta.
           </p>
@@ -226,7 +226,7 @@ export default function SignUpForm() {
           />
         </div>
         <Button
-          className="bg-[#FD0078] text-white"
+          className="bg-[#FD0078] text-white font-body"
           variant="solid"
           size="md"
           radius="none"
@@ -236,6 +236,7 @@ export default function SignUpForm() {
           Cadastrar-me
         </Button>
         <Button
+          className="font-body"
           variant="solid"
           size="md"
           radius="none"

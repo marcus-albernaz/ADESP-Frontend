@@ -72,7 +72,7 @@ export default function LoginForm({ openAction, onOpen }: LoginFormPropTypes) {
             }
           />
         </div>
-        <div className="flex justify-end text-sm text-[#FFEED3]">
+        <div className="flex justify-end text-sm text-[#FFEED3] font-body">
           <button type="button" className="hover:underline" onClick={() => openAction(onOpen)}>
             Esqueci minha senha!
           </button>
@@ -81,7 +81,7 @@ export default function LoginForm({ openAction, onOpen }: LoginFormPropTypes) {
 
       <Button
         type="submit"
-        className="w-full bg-[#FD0078] text-white"
+        className="w-full bg-pink-900 text-white font-body"
         radius="none"
         size="md"
         form="loginform"
