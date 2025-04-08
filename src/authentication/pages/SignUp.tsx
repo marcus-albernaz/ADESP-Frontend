@@ -1,7 +1,7 @@
 'use client';
 
-import Header from '@/authentication/components/layout/Header';
-import Footer from '@/authentication/components/layout/Footer';
+import Header from '@/core/components/Header';
+import Footer from '@/core/components/Footer';
 import SignUpForm from '@/authentication/components/SignUpForm';
 
 export default function SignUpPage() {

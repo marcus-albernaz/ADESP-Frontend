@@ -1,7 +1,7 @@
 import { Navigate, Outlet, Route, Routes } from "react-router-dom";
-import LoginPage from "./authentication/pages/Login/Login";
+import LoginPage from "./authentication/pages/Login";
 import AuthProvider, { useAuth } from "./authentication/contexts/AuthContext";
-import SignUpPage from "./authentication/pages/Login/SignUp";
+import SignUpPage from "./authentication/pages/SignUp";
 
 const ProtectedRoute = () => {
   const credentials = useAuth();

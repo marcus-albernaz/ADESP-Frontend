@@ -1,5 +1,5 @@
-import Header from "@/authentication/components/layout/Header";
-import Footer from "@/authentication/components/layout/Footer";
+import Header from "@/core/components/Header";
+import Footer from "@/core/components/Footer";
 import banner from "/Banner_Principal.png";
 import { useDisclosure } from "@heroui/modal";
 import LoginForm from "@/authentication/components/LoginForm";

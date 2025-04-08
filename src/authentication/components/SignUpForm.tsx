@@ -4,7 +4,7 @@ import { SignUpRequest } from "../types";
 import { useForm } from "react-hook-form";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import festivalApi from "@/core/api/api";
-import { EventHandler, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import InvalidInvite from "./InvalidInvite";
 import { Eye, EyeOffIcon } from "lucide-react";
 import AppModal from "@/core/components/AppModal";
@@ -217,7 +217,7 @@ export default function SignUpForm() {
                 {showConfirmationPassword ? <Eye /> : <EyeOffIcon />}
               </button>
             }
-            validate={(value) => {
+            validate={() => {
               if(!(password === confirmationPassword)){
                 return "As Senhas não conferem!";
               }

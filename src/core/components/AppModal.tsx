@@ -1,12 +1,11 @@
 import ModalPropTypes from "@/core/types/ModalPropTypes";
-import { Button, PressEvent } from "@heroui/button";
+import { Button } from "@heroui/button";
 import {
   Modal,
   ModalBody,
   ModalContent,
   ModalFooter,
-  ModalHeader,
-  useDisclosure,
+  ModalHeader
 } from "@heroui/modal";
 import { BadgeCheckIcon } from "lucide-react";
 
