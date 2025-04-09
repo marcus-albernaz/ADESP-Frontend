@@ -12,6 +12,8 @@ import { useForm } from "react-hook-form"
 import { LoginRequest } from "@/authentication/types";
 import { useAuth } from "@/authentication/contexts/AuthContext";
 
+
+
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [passwordFieldType, setPasswordFieldType] = useState('password');
@@ -134,7 +136,17 @@ export default function LoginPage() {
         />
 
       </div>
+      
+      
 
+   
+
+
+
+            
+
+
+           
       <Footer />
     </div>
   );
