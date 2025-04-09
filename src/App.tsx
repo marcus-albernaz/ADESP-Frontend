@@ -1,6 +1,7 @@
 import { Navigate, Outlet, Route, Routes } from "react-router-dom";
-import LoginPage from "./authentication/pages/Login/page";
+import LoginPage from "./authentication/pages/Login";
 import AuthProvider, { useAuth } from "./authentication/contexts/AuthContext";
+import SignUpPage from "./authentication/pages/SignUp";
 
 const ProtectedRoute = () => {
   const credentials = useAuth();
@@ -15,7 +16,7 @@ const ProtectedRoute = () => {
 const PrivateRoute = () => {
   const authenticated = useAuth();
   
-  if(!authenticated) return <Navigate to="/login" replace/>
+  if(!authenticated?.accessToken) return <Navigate to="/auth/signin" replace/>
 
   return (
     <Outlet/>
@@ -28,8 +29,9 @@ function App() {
       <Routes>
         <Route path='auth' element={<ProtectedRoute />}>
           <Route path='signin' element={<LoginPage />}></Route>
+          <Route path="signup" element={<SignUpPage />}></Route>
         </Route>
-        <Route path='auth' element={<PrivateRoute />}>
+          <Route path='/' element={<PrivateRoute />}>
         </Route>
       </Routes>
     </AuthProvider>

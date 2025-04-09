@@ -1,5 +1,5 @@
-import Header from "@/authentication/components/layout/Header";
-import Footer from "@/authentication/components/layout/Footer";
+import Header from "@/core/components/Header";
+import Footer from "@/core/components/Footer";
 import banner from "/Banner_Principal.png";
 import { useDisclosure } from "@heroui/modal";
 import LoginForm from "@/authentication/components/LoginForm";
@@ -20,7 +20,7 @@ export default function LoginPage() {
               className="w-full h-auto object-contain sm:w-3/4 md:w-full"
             />
           </div>
-          <LoginForm onOpen={onOpen} openAction={(onOpen: () => void) => {onOpen()}}/>
+          <LoginForm onOpen={onOpen} openAction={onOpen}/>
           <RecoveryForm isOpen={isOpen} onOpenChange={onOpenChange} onClose={onClose}/>
         </div>
       </div>

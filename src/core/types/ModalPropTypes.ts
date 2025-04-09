@@ -3,13 +3,15 @@ import React from "react";
 type ModalPropTypes = {
     variant: 'form' | 'warning' | 'error' | 'success',
     title: string,
-    body: React.ReactNode,
+    message?: string,
+    body?: React.ReactNode,
     footer?: React.ReactNode,
-    isOpen: boolean,
     isFormSubmitLoading: boolean,
     onClose?: () => void,
+    isOpen: boolean,
     onOpenChange: () => void,
-    formAction?: () => any
+    modalAction?: () => any,
+    buttonText?: string
 }
 
 export default ModalPropTypes;

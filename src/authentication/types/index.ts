@@ -43,3 +43,11 @@ export type RecoveryFormPropTypes = {
   isOpen: boolean,
   onOpenChange: () => void
 }
+
+export type SignUpRequest = {
+  inviteToken: string | null,
+  name: string,
+  cpf: string,
+  username: string,
+  password: string
+}
