@@ -1,3 +1,4 @@
+//componente utilizado para descrever na tela de votação qual o restaurante e qual o prato em que o jurado está votando
 interface Descrition{
   owner: string; 
   desc: string;
