@@ -111,8 +111,12 @@ export default function Access() {
               isRequired
               value={nome}
               maxLength={45}
-              onChange={(e: { target: { value: SetStateAction<string>; }; }) => setNome(e.target.value)}
+              onChange={(e) => {
+                const onlyLetters = e.target.value.replace(/[^A-Za-zÀ-ÿ\s]/g, "");
+                setNome(onlyLetters);
+              }}
             />
+
             {nomeError && <p className="text-red-500 text-sm mt-1">{nomeError}</p>}
           </div>
 
