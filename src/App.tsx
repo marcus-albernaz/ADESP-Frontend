@@ -3,7 +3,7 @@ import LoginPage from "./authentication/pages/Login/page";
 import AuthProvider, { useAuth } from "./authentication/contexts/AuthContext";
 import Votation from "./votationScreen/pages/Votation/page";
 import Access from "./votationScreen/pages/Access/page";
-
+import Final from "./votationScreen/pages/Final/page"
 const ProtectedRoute = () => {
   const credentials = useAuth();
 
@@ -29,7 +29,7 @@ function App() {
     <AuthProvider>
       <Routes>
         <Route path='auth' element={<ProtectedRoute />}>
-          <Route path='signin' element={<Votation />}></Route>
+          <Route path='signin' element={<Final />}></Route>
         </Route>
         <Route path='auth' element={<PrivateRoute />}>
         </Route>
