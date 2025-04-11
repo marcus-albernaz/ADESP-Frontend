@@ -1,72 +1,72 @@
-import Header from "../components/Header"; // ajuste o caminho se necessário
-import { Card } from "@heroui/card";
-import {
-  UserGroupIcon,
-  MusicalNoteIcon,
-  FireIcon,
-  ChevronRightIcon
-} from "@heroicons/react/24/outline";
+import { useState, useRef, useEffect } from "react";
+import { Avatar, AvatarIcon } from "@heroui/avatar";
+import { motion, AnimatePresence } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import logo from "/Logo_Festival1.png";
 
-export default function AdminMenu() {
+export default function Header() {
+  const [isOpen, setIsOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+  const userName = "João Silva";
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (ref.current && !ref.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    navigate("/auth/signin");
+  };
+
   return (
-    <div className="min-h-screen bg-[#2b1e49]">
-      <Header />
+    <div
+      className="flex justify-between items-center px-3 py-4 mb-8"
+      ref={ref}
+    >
+      <img
+        src={logo}
+        alt="Logo Festival"
+        className="h-20 cursor-pointer"
+        onClick={() => navigate("/admin/menuPrincipal")}
+      />
 
-      <div className="flex flex-col justify-center items-center min-h-[calc(100vh-80px)] p-5">
-        <div className="w-full max-w-3xl">
-          {/* Título alinhado à esquerda */}
-          <h1 className="text-2xl font-bold text-[#fee9c9] mb-6 font-space">
-            Menu
-          </h1>
 
-          {/* Lista centralizada */}
-          <div className="flex flex-col gap-4 w-full">
-            <Card className="hover:shadow-lg cursor-pointer p-4 bg-[#ffeac9] flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <FireIcon className="w-6 h-6 text-pink-900" />
-                <div>
-                  <h2 className="text-lg font-semibold text-black font-space">
-                    Festival Gastronômico
-                  </h2>
-                  <p className="text-sm text-gray-500 font-space">
-                    Gerenciar Festival Gastronômico
-                  </p>
-                </div>
-              </div>
-              <ChevronRightIcon className="w-5 h-5 text-gray-500 ml-4" />
-            </Card>
-
-            <Card className="hover:shadow-lg cursor-pointer p-4 bg-[#ffeac9] flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <MusicalNoteIcon className="w-6 h-6 text-pink-900" />
-                <div>
-                  <h2 className="text-lg font-semibold text-black font-space">
-                    Festival Musical
-                  </h2>
-                  <p className="text-sm text-gray-500 font-space">
-                    Gerenciar Festival Musical
-                  </p>
-                </div>
-              </div>
-              <ChevronRightIcon className="w-5 h-5 text-gray-500 ml-4" />
-            </Card>
-
-            <Card className="hover:shadow-lg cursor-pointer p-4 bg-[#ffeac9] flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <UserGroupIcon className="w-6 h-6 text-pink-900" />
-                <div>
-                  <h2 className="text-lg font-semibold text-black font-space">
-                    Administradores
-                  </h2>
-                  <p className="text-sm text-gray-500 font-space">
-                    Gerenciar Administradores
-                  </p>
-                </div>
-              </div>
-              <ChevronRightIcon className="w-5 h-5 text-gray-500 ml-4" />
-            </Card>
-          </div>
+      {/* Avatar e Dropdown */}
+      <div className="relative">
+        <div onClick={() => setIsOpen(!isOpen)} className="cursor-pointer">
+          <Avatar>
+            <AvatarIcon />
+          </Avatar>
         </div>
+
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -5 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -5 }}
+              className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl z-10 p-4"
+            >
+              <p className="text-black font-semibold font-grotesk mb-2">
+                {userName}
+              </p>
+              <button
+                onClick={handleLogout}
+                className="w-full bg-[#e72708] text-white py-1 px-3 rounded-lg hover:bg-[#810808] transition"
+              >
+                Sair
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );

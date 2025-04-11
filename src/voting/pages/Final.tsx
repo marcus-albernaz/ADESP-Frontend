@@ -1,12 +1,21 @@
+import { useEffect } from "react";
+import confetti from "canvas-confetti";
 import imgVotation2 from "../assets/votation2.png";
 import Footer from "../components/Footer";
 import logo from "/Logo_Festival1.png";
 
 export default function Final() {
+  useEffect(() => {
+    confetti({
+      particleCount: 150,
+      spread: 100,
+      origin: { y: 0.6 },
+    });
+  }, []);
+
   return (
     <div className="flex flex-col min-h-screen bg-[#FA925F] font-space">
       <main className="flex flex-col items-center justify-center flex-grow px-4 text-center">
-
         {/* Logo do Festival */}
         <img src={logo} alt="Logo do Festival" className="w-60 mb-6" />
 
@@ -29,7 +38,6 @@ export default function Final() {
           >
             Quero Conhecer o Festival!
           </button>
-
         </div>
       </main>
 

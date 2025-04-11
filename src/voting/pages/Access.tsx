@@ -5,6 +5,8 @@ import img from "../assets/votation1.png";
 import { Button } from "@heroui/button";
 import { Input } from "@heroui/input";
 import Footer from "../components/Footer";
+import { motion } from "framer-motion";
+import { fadeUpTitle } from "@/core/animations/cardVariants";
 
 // Máscara de CPF
 function maskCPF(value: string): string {
@@ -73,10 +75,20 @@ export default function Access() {
       <Header />
 
       <div className="flex flex-col flex-grow items-center justify-center text-center px-4">
-        <img src={img} alt="Ilustração Tela Inicial Votação" className="max-w-xs md:max-w-md mt-6" />
+        <motion.img
+          src={img}
+          alt="Ilustração Tela Inicial Votação"
+          className="max-w-xs md:max-w-md mt-6"
+          {...fadeUpTitle}
+        />
 
-        <div className="w-full max-w-md text-left space-y-4 mt-6">
-          <h1 className="text-4xl text-center font-title font-bold">Estávamos esperando por você!</h1>
+        <motion.div
+          className="w-full max-w-md text-left space-y-4 mt-6"
+          {...fadeUpTitle}
+        >
+          <h1 className="text-4xl text-center font-title font-bold">
+            Estávamos esperando por você!
+          </h1>
           <p className="text-md text-center font-title font-semibold">
             Que bom que você veio votar! Preencha os campos abaixo e confirme para seguir com a votação.
           </p>
@@ -145,7 +157,7 @@ export default function Access() {
           >
             Confirmar!
           </Button>
-        </div>
+        </motion.div>
       </div>
 
       <Footer />

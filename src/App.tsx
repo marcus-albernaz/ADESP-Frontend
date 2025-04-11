@@ -1,37 +1,54 @@
 import { Navigate, Outlet, Route, Routes } from "react-router-dom";
-import LoginPage from "./authentication/pages/Login";
 import AuthProvider from "./authentication/contexts/AuthContext";
+
+// Auth Pages
+import LoginPage from "./authentication/pages/Login";
 import SignUpPage from "./authentication/pages/SignUp";
+
+// Voting Pages
 import Access from "./voting/pages/Access";
 import Voting from "./voting/pages/Voting";
 import Final from "./voting/pages/Final";
+
+// Admin Pages
 import Menu from "./administrador/pages/menuPrincipal";
+import MenuGastronomico from "./administrador/pages/menuGastronomico";
+import MenuMusical from "./administrador/pages/menuMusical";
+import MenuJurados from "./administrador/pages/menuJurados"
+
 
 function App() {
   return (
     <AuthProvider>
       <Routes>
-        {/* Rotas públicas sem proteção */}
+        {/* 🔐 Rotas públicas de autenticação */}
         <Route path="auth" element={<Outlet />}>
           <Route path="signin" element={<LoginPage />} />
           <Route path="signup" element={<SignUpPage />} />
         </Route>
 
-        {/* Todas as rotas agora acessíveis sem autenticação */}
+        {/* 🌐 Rotas principais do sistema */}
         <Route path="/" element={<Outlet />}>
+          {/* Redirecionamento padrão para tela de acesso à votação */}
           <Route index element={<Navigate to="/vote/access" />} />
-          <Route path="vote">
+
+          {/* 🗳️ Fluxo de votação */}
+          <Route path="vote" element={<Outlet />}>
             <Route path="access" element={<Access />} />
             <Route path="voting" element={<Voting />} />
             <Route path="final" element={<Final />} />
           </Route>
 
-          <Route path="admin">
-            <Route path="menu" element={<Menu />} />
+          {/* 🛠️ Painel administrativo */}
+          <Route path="admin" element={<Outlet />}>
+            <Route path="menuPrincipal" element={<Menu />} />
+            <Route path="menuGastronomico" element={<MenuGastronomico />} />
+            <Route path="menuMusical" element={<MenuMusical />} />
+            <Route path="menuJurados" element={<MenuJurados />} />
           </Route>
         </Route>
 
-        {/* Rota fallback */}
+        {/* 🔁 Rota fallback (caso nenhuma rota seja encontrada) */}
         <Route path="*" element={<Navigate to="/auth/signin" />} />
       </Routes>
     </AuthProvider>

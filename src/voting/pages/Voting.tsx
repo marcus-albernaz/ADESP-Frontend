@@ -37,9 +37,9 @@ function RatingInput({
   };
 
   return (
-    <div className="w-full mb-6">
-      <label className="block text-white font-semibold text-left mb-2">{label}</label>
-      <div className="flex items-center gap-6">
+    <div className="w-full">
+      <label className="block text-white font-semibold mb-2">{label}</label>
+      <div className="flex items-center gap-4">
         <input
           type="range"
           min="0"
@@ -47,7 +47,7 @@ function RatingInput({
           step="0.01"
           value={value}
           onChange={handleChange}
-          className="w-full h-2 rounded-lg appearance-none bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500"
+          className="w-full h-2 appearance-none bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 rounded-lg"
         />
         <input
           type="number"
@@ -56,7 +56,7 @@ function RatingInput({
           max="10"
           value={value}
           onChange={handleChange}
-          className="w-24 p-3 rounded bg-white text-black text-center font-semibold shadow-lg text-lg"
+          className="w-20 p-2 rounded-xl bg-white text-black text-center font-bold shadow-md"
         />
       </div>
     </div>
@@ -102,7 +102,7 @@ export default function Voting() {
       <Header />
 
       <main className="flex flex-col items-center px-4 py-10 sm:py-12 md:py-16 lg:py-20 bg-[#2B1E49] flex-grow w-full">
-        {/* Título com espaço para botão de voltar */}
+        {/* Cabeçalho com botão de voltar */}
         <div className="w-full max-w-2xl flex items-center justify-between mb-6">
           <div className="flex items-center gap-3 mt-3 w-full justify-start max-w-2xl mb-4">
             <button
@@ -132,7 +132,7 @@ export default function Voting() {
         </section>
 
         {/* Formulário de notas */}
-        <section className="w-full max-w-2xl bg-[#3A2D5D] p-6 rounded-2xl shadow-lg space-y-6">
+        <section className="w-full max-w-2xl bg-[#3A2D5D] p-6 rounded-2xl shadow-xl space-y-8">
           {criterios.map((criterio, index) => (
             <RatingInput
               key={index}
@@ -145,13 +145,14 @@ export default function Voting() {
           <button
             onClick={handleSubmit}
             disabled={!todosForamAlterados}
-            className={`w-full py-3 text-base font-normal text-white transition-colors ${todosForamAlterados
-              ? "bg-[#FB844A] hover:bg-[#D16E3E]"
-              : "bg-[#2B1E49] cursor-not-allowed"
+            className={`w-full py-3 text-lg font-semibold text-white rounded-xl transition-all duration-300 ${todosForamAlterados
+                ? "bg-[#FB844A] hover:bg-[#D16E3E] animate-pulse"
+                : "bg-[#2B1E49] opacity-50 cursor-not-allowed"
               }`}
           >
-            Votar
+            Enviar Voto
           </button>
+
         </section>
       </main>
     </div>
