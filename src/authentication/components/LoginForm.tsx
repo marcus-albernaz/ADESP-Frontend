@@ -93,10 +93,15 @@ export default function LoginForm({ openAction, onOpen }: LoginFormPropTypes) {
         hideIconWrapper
         color="danger"
         description={error.message}
-        title="Algo deu errado!"
+        title={error.title}
         variant="faded"
         isVisible={invalidCredentialsMessage}
+        isClosable
+        onClose={() => setInvalidCredentialsMessage(false)}
+        className="fixed bottom-24 left-1/2 transform -translate-x-1/2 z-50 shadow-lg w-full max-w-sm rounded-md"
       />
+
+
     </form>
   );
 }

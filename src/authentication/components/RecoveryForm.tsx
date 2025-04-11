@@ -66,7 +66,7 @@ export default function RecoveryForm({
               <Input
                 label="E-mail"
                 placeholder="Digite aqui..."
-                type="text"
+                type="email"
                 variant="flat"
                 size="sm"
                 radius="none"

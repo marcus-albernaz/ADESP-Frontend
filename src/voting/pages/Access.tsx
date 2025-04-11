@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from '../components/Header';
+import Header from "../components/Header";
 import img from "../assets/votation1.png";
-import { Button } from '@heroui/button';
+import { Button } from "@heroui/button";
 import { Input } from "@heroui/input";
 import Footer from "../components/Footer";
 
-// Função para aplicar máscara ao CPF
+// Máscara de CPF
 function maskCPF(value: string): string {
   const digits = value.replace(/\D/g, '').slice(0, 11);
   return digits
@@ -15,7 +15,7 @@ function maskCPF(value: string): string {
     .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
 }
 
-// Função para aplicar máscara ao telefone
+// Máscara de telefone
 function maskPhone(value: string): string {
   return value
     .replace(/\D/g, '')
@@ -50,7 +50,7 @@ export default function Access() {
     }
 
     if (!isNomeValid) {
-      setNomeError("Nome deve ter no mínimo 3 letras");
+      setNomeError("Por favor, digite seu nome corretamente");
       valid = false;
     } else {
       setNomeError("");
@@ -64,25 +64,24 @@ export default function Access() {
     }
 
     if (valid) {
-      navigate("/votation/votation");
+      navigate("/vote/voting");
     }
   };
 
   return (
-    <div className="flex flex-col min-h-screen relative bg-[#FA925F]">
+    <div className="flex flex-col min-h-screen relative bg-[#FA925F] text-black">
       <Header />
 
-      <div className="flex-col flex-grow flex items-center justify-center text-center font-bold font-space px-2">
-        <div>
-          <img src={img} alt="Ilustração Tela Inicial Votação" />
-        </div>
+      <div className="flex flex-col flex-grow items-center justify-center text-center px-4">
+        <img src={img} alt="Ilustração Tela Inicial Votação" className="max-w-xs md:max-w-md mt-6" />
 
-        <div className="w-full max-w-md text-left space-y-4 mt-4">
-          <h1 className="text-3xl text-center font-title">Estávamos esperando por você!</h1>
-          <p className="text-md text-center font-body font-normal">
+        <div className="w-full max-w-md text-left space-y-4 mt-6">
+          <h1 className="text-4xl text-center font-title font-bold">Estávamos esperando por você!</h1>
+          <p className="text-md text-center font-title font-semibold">
             Que bom que você veio votar! Preencha os campos abaixo e confirme para seguir com a votação.
           </p>
 
+          {/* CPF */}
           <div>
             <Input
               label="CPF"
@@ -94,11 +93,12 @@ export default function Access() {
               color="default"
               isRequired
               value={cpf}
-              onChange={(e: { target: { value: string; }; }) => setCpf(maskCPF(e.target.value))}
+              onChange={(e) => setCpf(maskCPF(e.target.value))}
             />
-            {cpfError && <p className="text-red-500 text-sm mt-1">{cpfError}</p>}
+            {cpfError && <p className="text-sm mt-1 text-[#7B0000]">{cpfError}</p>}
           </div>
 
+          {/* Nome */}
           <div>
             <Input
               label="Nome Completo"
@@ -116,10 +116,10 @@ export default function Access() {
                 setNome(onlyLetters);
               }}
             />
-
-            {nomeError && <p className="text-red-500 text-sm mt-1">{nomeError}</p>}
+            {nomeError && <p className="text-sm mt-1 text-[#7B0000]">{nomeError}</p>}
           </div>
 
+          {/* Telefone */}
           <div>
             <Input
               label="Telefone"
@@ -131,15 +131,16 @@ export default function Access() {
               color="default"
               isRequired
               value={telefone}
-              onChange={(e: { target: { value: string; }; }) => setTelefone(maskPhone(e.target.value))}
+              onChange={(e) => setTelefone(maskPhone(e.target.value))}
             />
-            {telefoneError && <p className="text-red-500 text-sm mt-1">{telefoneError}</p>}
+            {telefoneError && <p className="text-sm mt-1 text-[#7B0000]">{telefoneError}</p>}
           </div>
 
+          {/* Botão Confirmar */}
           <Button
             type="button"
             onPress={handleSubmit}
-            className="w-full bg-[#2B1E49] text-white hover:bg-[#201636]"
+            className="w-full bg-[#2B1E49] text-white font-title hover:bg-[#201636] transition-colors duration-200"
             radius="none"
           >
             Confirmar!

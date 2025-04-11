@@ -1,24 +1,43 @@
 import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import LoginPage from "./authentication/pages/Login";
-import AuthProvider from "./authentication/contexts/AuthContext";
+import AuthProvider, { useAuth } from "./authentication/contexts/AuthContext";
 import SignUpPage from "./authentication/pages/SignUp";
 import Access from "./voting/pages/Access";
 import Voting from "./voting/pages/Voting";
 import Final from "./voting/pages/Final";
-import Menu from "./administrador/pages/menuPrincipal";
+import Menu from "./Admin/page";
+
+const ProtectedRoute = () => {
+  const credentials = useAuth();
+
+  if (credentials?.accessToken) {
+    return <Navigate to='/' />;
+  }
+
+  return <Outlet />;
+};
+
+const PrivateRoute = () => {
+  const authenticated = useAuth();
+
+  if (!authenticated?.accessToken) return <Navigate to="/auth/signin" replace />;
+
+  return <Outlet />;
+};
 
 function App() {
   return (
     <AuthProvider>
       <Routes>
-        {/* Rotas públicas sem proteção */}
-        <Route path="auth" element={<Outlet />}>
+
+        {/* Rotas públicas */}
+        <Route path="auth" element={<ProtectedRoute />}>
           <Route path="signin" element={<LoginPage />} />
           <Route path="signup" element={<SignUpPage />} />
         </Route>
 
-        {/* Todas as rotas agora acessíveis sem autenticação */}
-        <Route path="/" element={<Outlet />}>
+        {/* Rotas privadas (usuário autenticado) */}
+        <Route path="/" element={<PrivateRoute />}>
           <Route index element={<Navigate to="/vote/access" />} />
           <Route path="vote">
             <Route path="access" element={<Access />} />
@@ -26,8 +45,10 @@ function App() {
             <Route path="final" element={<Final />} />
           </Route>
 
+          {/* Rotas de administrador */}
           <Route path="admin">
             <Route path="menu" element={<Menu />} />
+            {/* Aqui você pode adicionar outras telas de admin */}
           </Route>
         </Route>
 
