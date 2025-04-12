@@ -11,7 +11,7 @@ import {
   TableCell,
 } from "@heroui/table";
 
-export default function MenuJurados() {
+export default function MenuAdmin() {
   return (
     <div className="min-h-screen bg-[#2b1e49]">
       <Header />
@@ -26,7 +26,7 @@ export default function MenuJurados() {
               onClick={() => window.history.back()}
             />
             <h1 className="text-3xl font-bold text-[#fee9c9] font-title">
-              Gerenciamento de Jurados
+              Administradores do Sistema
             </h1>
           </motion.div>
 
@@ -38,9 +38,6 @@ export default function MenuJurados() {
                     Nome
                   </TableColumn>
                   <TableColumn className="text-left text-sm text-gray-700 font-semibold">
-                    Especialidade
-                  </TableColumn>
-                  <TableColumn className="text-left text-sm text-gray-700 font-semibold">
                     Status
                   </TableColumn>
                   <TableColumn className="text-left text-sm text-gray-700 font-semibold">
@@ -50,44 +47,19 @@ export default function MenuJurados() {
               </TableHeader>
 
               <TableBody>
-                {/* Exemplo de jurado */}
+                {/* Exemplo futuro de administrador */}
+                {/* <TableRow>
+                  <TableCell>João Pedro</TableCell>
+                  <TableCell>
+                    <span className="text-green-600 font-semibold">Ativo</span>
+                  </TableCell>
+                  <TableCell>
+                    <button className="text-blue-600 hover:underline">Editar</button>
+                  </TableCell>
+                </TableRow> */}
                 <TableRow>
-                  <TableCell>Lucas Silva</TableCell>
-                  <TableCell>Culinária Brasileira</TableCell>
-                  <TableCell>
-                    <span className="text-green-500 font-bold">Ativo</span>
-                  </TableCell>
-                  <TableCell>
-                    <button className="text-blue-600 hover:underline">
-                      Editar
-                    </button>
-                    <button className="ml-4 text-red-600 hover:underline">
-                      Remover
-                    </button>
-                  </TableCell>
-                </TableRow>
-
-                {/* Outra linha de jurado exemplo */}
-                <TableRow>
-                  <TableCell>Maria Oliveira</TableCell>
-                  <TableCell>Culinária Italiana</TableCell>
-                  <TableCell>
-                    <span className="text-red-500 font-bold">Inativo</span>
-                  </TableCell>
-                  <TableCell>
-                    <button className="text-blue-600 hover:underline">
-                      Editar
-                    </button>
-                    <button className="ml-4 text-red-600 hover:underline">
-                      Remover
-                    </button>
-                  </TableCell>
-                </TableRow>
-
-                {/* Caso não tenha jurados */}
-                <TableRow>
-                  <TableCell colSpan={4} className="text-center text-gray-500 py-6">
-                    Nenhum jurado cadastrado ainda.
+                  <TableCell colSpan={3} className="text-center text-gray-500 py-6">
+                    Nenhum administrador cadastrado ainda.
                   </TableCell>
                 </TableRow>
               </TableBody>

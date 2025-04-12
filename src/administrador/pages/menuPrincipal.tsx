@@ -11,7 +11,7 @@ import { motion } from "framer-motion";
 import { cardVariants, fadeUpTitle } from "../../core/animations/cardVariants";
 import { useNavigate } from "react-router-dom";
 
-export default function AdminMenu() {
+export default function AdminPrincipal() {
   const navigate = useNavigate();
 
   const menuItems = [
@@ -31,7 +31,7 @@ export default function AdminMenu() {
       title: "Administradores",
       description: "Gerenciar Administradores",
       icon: <UserGroupIcon className="w-6 h-6 text-pink-900" />,
-      route: "/admin/menuJurados",
+      route: "/admin/MenuAdmin",
     },
   ];
 

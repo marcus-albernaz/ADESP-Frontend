@@ -14,8 +14,7 @@ import Final from "./voting/pages/Final";
 import Menu from "./administrador/pages/menuPrincipal";
 import MenuGastronomico from "./administrador/pages/menuGastronomico";
 import MenuMusical from "./administrador/pages/menuMusical";
-import MenuJurados from "./administrador/pages/menuJurados"
-
+import MenuJurados from "./administrador/pages/menuJurados";
 
 function App() {
   return (
