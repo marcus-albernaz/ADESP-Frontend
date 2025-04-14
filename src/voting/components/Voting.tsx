@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "./Header";
-import { Descrition } from "./Descrition";
+import Header from "../components/Header";
+import { Descrition } from "../components/Descrition";
 import "../styles/range.css";
 import returnImg from "../assets/return.png";
-import { ScreensPropTypes } from "../types/ScreensPropTypes";
+import { VoteScreenPropTypes } from "../types/ScreensPropTypes";
 import { Button } from "@heroui/button";
 import { ChevronLeft } from "lucide-react";
 
@@ -66,16 +66,16 @@ function RatingInput({
   );
 }
 
-export default function Voting({ onNavigate }: ScreensPropTypes) {
+export default function Voting({ onNavigate, formRegister, submitHandler }: VoteScreenPropTypes) {
   const navigate = useNavigate();
 
   const lugar = "Restaurante Araguaia";
   const prato = "Lasanha";
-  const categoria = 2;
+  const categoria = 1;
 
   const perguntasPorCategoria: Record<number, string[]> = {
-    1: ["1-Sabor", "2-Temperatura", "3-Apresentação", "4-Harmonia"],
-    2: ["1-Melodia", "2-Ritmo", "3-Cantor", "4-Originalidade"],
+    1: ["Sabor", "Temperatura", "Apresentação", "Harmonia"],
+    2: ["Melodia", "Ritmo", "Cantor", "Originalidade"],
   };
 
   const criterios = perguntasPorCategoria[categoria] || [];
@@ -96,6 +96,7 @@ export default function Voting({ onNavigate }: ScreensPropTypes) {
   const todosForamAlterados = alterados.every(Boolean);
 
   const handleSubmit = () => {
+    submitHandler();
     console.log("Notas enviadas:", notas);
     navigate("/vote/final");
   };
@@ -104,35 +105,33 @@ export default function Voting({ onNavigate }: ScreensPropTypes) {
     <div className="flex flex-col min-h-screen bg-[#2B1E49] font-sans">
       <Header />
 
-      <main className="flex flex-col items-center px-4 py-10 sm:py-12 md:py-16 lg:py-20 bg-[#2B1E49] flex-grow w-full">
+      <main className="flex flex-col items-center gap-4 px-4 py-10 sm:py-12 md:py-16 lg:py-20 bg-[#2B1E49] flex-grow w-full">
         {/* Cabeçalho com botão de voltar */}
-        <div className="w-full max-w-2xl flex items-center justify-between mb-6">
+        <div className="w-full max-w-2xl flex items-center justify-between">
           <div className="flex items-center gap-3 mt-3 w-full justify-start max-w-2xl mb-4">
             <Button
-              onPress={() => onNavigate("initial")}
               className="bg-[#FB844A]"
-              type="button"
-              radius="sm"
               size="md"
+              radius="sm"
               isIconOnly
             >
               <ChevronLeft color="white"/>
             </Button>
-            <h1 className="text-3xl sm:text-4xl font-bold text-[#FFEAC9]">
+            <h1 className="text-3xl sm:text-4xl font-title font-bold text-[#FEE9C9]">
               Voto
             </h1>
           </div>
-
-          <div className="w-1/5"></div>
         </div>
 
         {/* Informações do voto */}
-        <section className="w-full max-w-2xl text-white text-center mb-8">
-          <h3 className="text-base sm:text-lg font-light mb-1">
+        <div className="flex flex-col justify-center items-center w-full max-w-2xl">
+          <h3 className="sm:text-lg font-body font-normal text-sm w-fit text-white">
             Você está votando em:
           </h3>
-          <Descrition owner={lugar} desc={prato} className="text-white" />
-        </section>
+          <div className="bg-[#7828C8] pl-4 pr-4 w-fit rounded-xl">
+            <p className="text-white font-body font-light">Lasanha • Restaurante Araguaia</p>
+          </div>
+        </div>
 
         {/* Formulário de notas */}
         <section className="w-full max-w-2xl bg-[#3A2D5D] p-6 rounded-2xl shadow-xl space-y-8">

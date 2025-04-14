@@ -144,7 +144,7 @@ export default function Access({ onNavigate, formRegister }: ScreensPropTypes) {
               color="default"
               isRequired
               value={telefone}
-              {...formRegister("name")}
+              {...formRegister("contactNumber")}
               onChange={(e) => setTelefone(maskPhone(e.target.value))}
             />
             {telefoneError && <p className="text-sm mt-1 text-[#7B0000]">{telefoneError}</p>}

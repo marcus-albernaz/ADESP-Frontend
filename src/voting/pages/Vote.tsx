@@ -9,6 +9,11 @@ export default function Vote(){
     const [ screen, setScreen ] = useState("initial")
     const { register, handleSubmit } = useForm<VoteRequest>();
 
+    const handleVoteSubmit = (data: VoteRequest) => {
+        console.log("bateu")
+        console.log(data);
+    }
+
     const handleShowScreen = (name: string) => {
         if(name === "initial"){
             setScreen(name);
@@ -33,7 +38,7 @@ export default function Vote(){
 
     if(screen === "voting"){
         return(
-            <Voting onNavigate={handleShowScreen} formRegister={register}/>
+            <Voting onNavigate={handleShowScreen} formRegister={register} submitHandler={handleSubmit(handleVoteSubmit)}/>
         )
     }
 
