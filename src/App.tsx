@@ -6,15 +6,16 @@ import LoginPage from "./authentication/pages/Login";
 import SignUpPage from "./authentication/pages/SignUp";
 
 // Voting Pages
-import Access from "./voting/pages/Access";
-import Voting from "./voting/pages/Voting";
-import Final from "./voting/pages/Final";
+import Access from "./voting/components/Access";
+import Voting from "./voting/components/Voting";
+import Final from "./voting/components/Final";
 
 // Admin Pages
 import Menu from "./administrador/pages/menuPrincipal";
 import MenuGastronomico from "./administrador/pages/menuGastronomico";
 import MenuMusical from "./administrador/pages/menuMusical";
 import MenuJurados from "./administrador/pages/menuJurados";
+import Vote from "./voting/pages/Vote";
 
 function App() {
   return (
@@ -33,8 +34,7 @@ function App() {
 
           {/* 🗳️ Fluxo de votação */}
           <Route path="vote" element={<Outlet />}>
-            <Route path="access" element={<Access />} />
-            <Route path="voting" element={<Voting />} />
+            <Route path="access" element={<Vote/>} />
             <Route path="final" element={<Final />} />
           </Route>
 
