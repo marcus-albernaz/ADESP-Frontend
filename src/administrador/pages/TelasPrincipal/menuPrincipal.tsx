@@ -8,10 +8,12 @@ import {
 import { motion } from "framer-motion";
 import { cardVariants, fadeUpTitle } from "../../../core/animations/cardVariants";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../../context/UserContext"; // Importe o hook useUser
+
 
 export default function AdminPrincipal() {
   const navigate = useNavigate();
-  const userRole = "administrador";
+  const { userRole } = useUser();
 
   const menuItems = [
     {

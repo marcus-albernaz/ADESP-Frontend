@@ -14,6 +14,9 @@ import {
 import Plus from "../../assets/plus.png";
 import EditIcon from "../../assets/edit.png"; // Imagem que você vai adicionar
 import { useNavigate } from "react-router-dom";
+import ViewIcon from "../../assets/view.png"; // substitua pelo caminho correto
+import { useUser } from "../../context/UserContext";
+
 
 const restaurantesIniciais = [
   {
@@ -40,7 +43,9 @@ const restaurantesIniciais = [
 
 export default function MenuEstabelecimentos() {
   const [restaurantes, setRestaurantes] = useState(restaurantesIniciais);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
+  const { userRole } = useUser();
+
 
   return (
     <div className="min-h-screen bg-[#2b1e49]">
@@ -59,16 +64,18 @@ export default function MenuEstabelecimentos() {
               Estabelecimentos
             </h1>
           </motion.div>
+          {userRole === "administrador" && (
+            <div className="flex justify-start mb-6">
+              <button
+                onClick={() => navigate("/admin/menuaddEstabelecimentos")}
+                className="flex items-center gap-2 px-4 py-2 rounded-lg text-white font-semibold bg-[#fb844a]"
+              >
+                <img src={Plus} alt="ico" />
+                Adicionar Estabelecimento
+              </button>
+            </div>
+          )}
 
-          <div className="flex justify-start mb-6">
-            <button
-              onClick={() => navigate("/admin/menuaddEstabelecimentos")}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg text-white font-semibold bg-[#fb844a]"
-            >
-              <img src={Plus} alt="ico" />
-              Adicionar Estabelecimento
-            </button>
-          </div>
 
           <div className="bg-white rounded-2xl shadow-lg p-4">
             <Table aria-label="Tabela de Restaurantes">
@@ -94,13 +101,20 @@ export default function MenuEstabelecimentos() {
                     </TableCell>
                     <TableCell>
                       <button
-                        onClick={() => navigate("/admin/menuaddEstabelecimentos")}
+                        onClick={() =>
+                          navigate("/admin/menuaddEstabelecimentos")
+                        }
                         className="p-2 rounded-full transition-colors duration-300 text-blue-500 hover:bg-blue-100"
-                        title="Editar restaurante"
+                        title={userRole === "jurado" ? "Visualizar restaurante" : "Editar restaurante"}
                       >
-                        <img src={EditIcon} alt="Editar" className="h-7 w-7" />
+                        <img
+                          src={userRole === "jurado" ? ViewIcon : EditIcon}
+                          alt={userRole === "jurado" ? "Visualizar" : "Editar"}
+                          className="h-7 w-7"
+                        />
                       </button>
                     </TableCell>
+
                   </TableRow>
                 ))}
               </TableBody>

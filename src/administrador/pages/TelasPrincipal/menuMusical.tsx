@@ -11,9 +11,11 @@ import { motion } from "framer-motion";
 import { cardVariants, fadeUpTitle } from "../../../core/animations/cardVariants";
 import star from "../../assets/star.png";
 import returnIcon from "../../assets/return.png";
+import { useUser } from "../../context/UserContext";
+
 
 export default function MenuMusical() {
-  const userRole = "administrador";
+  const { userRole } = useUser();
 
 
   const menuItems = [

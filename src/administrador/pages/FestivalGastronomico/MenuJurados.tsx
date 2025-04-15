@@ -164,10 +164,10 @@ export default function MenuJurados() {
       {/* Modal de desativação de jurado */}
       <DesativarJuradoModal
         isOpen={isDesativarModalOpen}
-        onOpenChange={() => setIsDesativarModalOpen}
         onClose={() => setIsDesativarModalOpen(false)}
         onConfirm={handleConfirmarDesativacao}
       />
+
     </div>
   );
 }

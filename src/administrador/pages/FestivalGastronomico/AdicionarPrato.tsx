@@ -7,6 +7,7 @@ import { Input } from "@heroui/input";
 import { Checkbox } from "@heroui/checkbox";
 import { Button } from "@heroui/button";
 import ReturnIcon from "../../assets/return.png";
+import { useUser } from "../../context/UserContext";
 
 export default function AdicionarPrato() {
   const [nome, setNome] = useState("");
@@ -16,6 +17,8 @@ export default function AdicionarPrato() {
   const [erro, setErro] = useState(""); // Estado para mensagens de erro
 
   const navigate = useNavigate();
+
+  const { userRole } = useUser();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -64,6 +67,7 @@ export default function AdicionarPrato() {
             onChange={(e) => setNome(e.target.value)}
             placeholder="Digite o nome do prato"
             required
+            disabled={userRole === "jurado"} // Desabilitando campo
           />
 
           {/* Dropdown Restaurante */}
@@ -76,6 +80,7 @@ export default function AdicionarPrato() {
               onChange={(e) => setRestaurante(e.target.value)}
               className="w-full p-3 rounded-lg bg-white text-black"
               required
+              disabled={userRole === "jurado"} // Desabilitando campo
             >
               <option value="">Selecione o restaurante</option>
               <option value="Restaurante A">Restaurante A</option>
@@ -100,6 +105,7 @@ export default function AdicionarPrato() {
                     checked={tipoPrato === "restaurante"}
                     onChange={() => setTipoPrato("restaurante")}
                     className="mr-2"
+                    disabled={userRole === "jurado"} // Desabilitando campo
                   />
                   <label htmlFor="restaurante" className="text-black text-sm font-medium">
                     Restaurante
@@ -115,6 +121,7 @@ export default function AdicionarPrato() {
                     checked={tipoPrato === "similar"}
                     onChange={() => setTipoPrato("similar")}
                     className="mr-2"
+                    disabled={userRole === "jurado"} // Desabilitando campo
                   />
                   <label htmlFor="similar" className="text-black text-sm font-medium">
                     Similar
@@ -130,6 +137,7 @@ export default function AdicionarPrato() {
               checked={inativo}
               onChange={(e) => setInativo(e.target.checked)}
               id="inativo"
+              disabled={userRole === "jurado"} // Desabilitando checkbox
             />
             <label htmlFor="inativo" className="text-sm font-medium text-white">
               Inativo
@@ -145,12 +153,14 @@ export default function AdicionarPrato() {
 
           {/* Botões */}
           <div className="pt-6 flex flex-col gap-3">
-            <Button
-              type="submit"
-              className="bg-[#fb844a] text-white w-full text-base py-6"
-            >
-              Cadastrar
-            </Button>
+            {userRole !== "jurado" && ( // Exibir botão "Cadastrar" apenas para administrador
+              <Button
+                type="submit"
+                className="bg-[#fb844a] text-white w-full text-base py-6"
+              >
+                Cadastrar
+              </Button>
+            )}
             <Button
               type="button"
               onClick={() => navigate(-1)}

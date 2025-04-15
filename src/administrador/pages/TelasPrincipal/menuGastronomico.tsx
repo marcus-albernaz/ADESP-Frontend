@@ -13,21 +13,25 @@ import { cardVariants, fadeUpTitle } from "../../../core/animations/cardVariants
 import star from "../../assets/star.png";
 import returnIcon from "../../assets/return.png";
 import { useNavigate } from "react-router-dom";
-
+import { useUser } from "../../context/UserContext";
 
 export default function MenuGastronomico() {
   const navigate = useNavigate();
-  const userRole = "administrador";
+  const { userRole } = useUser();
   
+  const votacaoDescription =
+  userRole.toLowerCase() === "administrador"
+    ? "Veja o andamento da votação por aqui!"
+    : "Participe da votação por aqui!";
+
   const menuItems = [
-    {
-      title: "Votação",
-      description: "Participe da votação por aqui!",
-      icon: <ClipboardDocumentListIcon className="w-6 h-6 text-white" />,
-      bg: "#fb844a",
-      route: "",
-      roleRequired: "jurado",
-    },
+  {
+    title: "Votação",
+    description: votacaoDescription,
+    icon: <ClipboardDocumentListIcon className="w-6 h-6 text-white" />,
+    bg: "#fb844a",
+    route: "", // coloque a rota correta aqui
+  },
     {
       title: "Estabelecimentos",
       description: "Gerenciar Estabelecimentos",
@@ -56,7 +60,7 @@ export default function MenuGastronomico() {
       icon: <DocumentTextIcon className="w-6 h-6 text-pink-900" />,
       bg: "#ffeac9",
       route: "",
-      roleRequired: "administrador",
+      roleRequired: "desativado",
     },
   ];
   const filteredMenuItems = menuItems.filter(item => !item.roleRequired || item.roleRequired === userRole);

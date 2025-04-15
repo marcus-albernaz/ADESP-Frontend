@@ -7,6 +7,7 @@ import { Input } from "@heroui/input";
 import { Checkbox } from "@heroui/checkbox";
 import { Button } from "@heroui/button";
 import ReturnIcon from "../../assets/return.png";
+import { useUser } from "../../context/UserContext";
 
 export default function AdicionarEstabelecimento() {
   const [nome, setNome] = useState("");
@@ -16,11 +17,13 @@ export default function AdicionarEstabelecimento() {
   const [numero, setNumero] = useState("");
   const [inativo, setInativo] = useState(false);
   const [logradouro, setLogradouro] = useState("")
-
+  const { userRole } = useUser();
+  const isReadOnly = userRole === "jurado";
   const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (isReadOnly) return;
 
     console.log({
       nome,
@@ -59,6 +62,7 @@ export default function AdicionarEstabelecimento() {
             value={nome}
             onChange={(e) => setNome(e.target.value)}
             placeholder="Digite o nome"
+            readOnly={isReadOnly}
             required
           />
           <Input
@@ -66,6 +70,7 @@ export default function AdicionarEstabelecimento() {
             value={responsavel}
             onChange={(e) => setResponsavel(e.target.value)}
             placeholder="Digite o nome do responsável"
+            readOnly={isReadOnly}
             required
           />
           <Input
@@ -73,6 +78,7 @@ export default function AdicionarEstabelecimento() {
             value={cep}
             onChange={(e) => setCep(e.target.value)}
             placeholder="Digite o CEP"
+            readOnly={isReadOnly}
             required
           />
           <Input
@@ -80,6 +86,7 @@ export default function AdicionarEstabelecimento() {
             value={bairro}
             onChange={(e) => setBairro(e.target.value)}
             placeholder="Digite o bairro"
+            readOnly={isReadOnly}
             required
           />
           <Input
@@ -87,6 +94,7 @@ export default function AdicionarEstabelecimento() {
             value={logradouro}
             onChange={(e) => setLogradouro(e.target.value)}
             placeholder="Digite o Logradouro"
+            readOnly={isReadOnly}
             required
           />
           <Input
@@ -94,6 +102,7 @@ export default function AdicionarEstabelecimento() {
             value={numero}
             onChange={(e) => setNumero(e.target.value)}
             placeholder="Digite o número"
+            readOnly={isReadOnly}
             required
           />
 
@@ -102,6 +111,7 @@ export default function AdicionarEstabelecimento() {
               checked={inativo}
               onChange={(e) => setInativo(e.target.checked)}
               id="inativo"
+              disabled={isReadOnly}
             />
             <label htmlFor="inativo" className="text-sm font-medium text-white">
               Inativo
@@ -109,12 +119,15 @@ export default function AdicionarEstabelecimento() {
           </div>
 
           <div className="pt-6 flex flex-col gap-3">
-            <Button
-              type="submit"
-              className="bg-[#fb844a] text-white w-full text-base py-6"
-            >
-              Cadastrar
-            </Button>
+            {userRole === "administrador" && (
+              <Button
+                type="submit"
+                className="bg-[#fb844a] text-white w-full text-base py-6"
+              >
+                Cadastrar
+              </Button>
+
+            )}
             <Button
               type="button"
               onClick={() => navigate(-1)}

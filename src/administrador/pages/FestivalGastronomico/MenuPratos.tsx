@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Importando useNavigate
+import { useNavigate } from "react-router-dom";
 import Header from "../../components/Header";
 import returnIcon from "../../assets/return.png";
 import { motion } from "framer-motion";
@@ -12,10 +12,10 @@ import {
   TableRow,
   TableCell,
 } from "@heroui/table";
-import ConvidarIcone from "../../assets/convidarIco.png";
-import { CheckIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import edit from "../../assets/edit.png"
 import plus from "../../assets/plus.png"
+import view from "../../assets/view.png";
+import { useUser } from "../../context/UserContext";
 
 const pratosIniciais = [
   {
@@ -45,6 +45,7 @@ export default function MenuPratos() {
   const [pratos, setPratos] = useState(pratosIniciais);
   const [isDesativarModalOpen, setIsDesativarModalOpen] = useState(false);
   const [pratoParaDesativar, setPratoParaDesativar] = useState<string | null>(null);
+  const { userRole } = useUser();
 
   const alternarStatus = (id: string) => {
     const prato = pratos.find((p) => p.id === id);
@@ -93,15 +94,18 @@ export default function MenuPratos() {
             </h1>
           </motion.div>
 
-          <div className="flex justify-start mb-6">
-            <button
-              onClick={() => navigate("/admin/menuAdicionarPrato")}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg text-white font-semibold bg-[#fb844a]"
-            >
-              <img src={plus} alt="ico" />
-              Adicionar Prato
-            </button>
-          </div>
+          {userRole !== "jurado" && (
+            <div className="flex justify-start mb-6">
+              <button
+                onClick={() => navigate("/admin/menuAdicionarPrato")}
+                className="flex items-center gap-2 px-4 py-2 rounded-lg text-white font-semibold bg-[#fb844a]"
+              >
+                <img src={plus} alt="ico" />
+                Adicionar Prato
+              </button>
+            </div>
+          )}
+
 
           {/* Tabela */}
           <div className="bg-white rounded-2xl shadow-lg p-4">
@@ -125,15 +129,15 @@ export default function MenuPratos() {
                       </span>
                     </TableCell>
                     <TableCell>
-                      {/* Imagem personalizada para Ações */}
                       <img
-                        src={edit}
-                        alt="Editar"
+                        src={userRole === "jurado" ? view : edit}
+                        alt={userRole === "jurado" ? "Visualizar" : "Editar"}
                         className="w-6 h-6 cursor-pointer"
-                        onClick={() => navigate("/admin/menuAdicionarPrato")} // Redirecionando para a tela AdicionarPrato ao clicar na imagem
-                        title={`Editar prato ${prato.nome}`}
+                        onClick={() => navigate("/admin/menuAdicionarPrato")}
+                        title={`${userRole === "jurado" ? "Visualizar" : "Editar"} prato ${prato.nome}`}
                       />
                     </TableCell>
+
                   </TableRow>
                 ))}
               </TableBody>
@@ -141,8 +145,6 @@ export default function MenuPratos() {
           </div>
         </div>
       </div>
-
-      {/* Modal de desativação de prato */}
     </div>
   );
 }
