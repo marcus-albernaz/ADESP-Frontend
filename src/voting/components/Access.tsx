@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "../components/Header";
+import Header from "./Header";
 import img from "../assets/votation1.png";
 import { Button } from "@heroui/button";
 import { Input } from "@heroui/input";
-import Footer from "../components/Footer";
+import Footer from "./Footer";
 import { motion } from "framer-motion";
 import { fadeUpTitle } from "@/core/animations/cardVariants";
+import { AccessScreenPropTypes, VoteRequest } from "../types";
 
 // Máscara de CPF
 function maskCPF(value: string): string {
@@ -26,7 +27,7 @@ function maskPhone(value: string): string {
     .replace(/(-\d{4})\d+?$/, '$1');
 }
 
-export default function Access() {
+export default function Access({ onNavigate, formRegister }: AccessScreenPropTypes) {
   const [cpf, setCpf] = useState("");
   const [nome, setNome] = useState("");
   const [telefone, setTelefone] = useState("");
@@ -66,7 +67,7 @@ export default function Access() {
     }
 
     if (valid) {
-      navigate("/vote/voting");
+      onNavigate("voting")
     }
   };
 
@@ -105,6 +106,7 @@ export default function Access() {
               color="default"
               isRequired
               value={cpf}
+              {...formRegister("cpf")}
               onChange={(e) => setCpf(maskCPF(e.target.value))}
             />
             {cpfError && <p className="text-sm mt-1 text-[#7B0000]">{cpfError}</p>}
@@ -123,6 +125,7 @@ export default function Access() {
               isRequired
               value={nome}
               maxLength={45}
+              {...formRegister("name")}
               onChange={(e) => {
                 const onlyLetters = e.target.value.replace(/[^A-Za-zÀ-ÿ\s]/g, "");
                 setNome(onlyLetters);
@@ -143,6 +146,7 @@ export default function Access() {
               color="default"
               isRequired
               value={telefone}
+              {...formRegister("contactNumber")}
               onChange={(e) => setTelefone(maskPhone(e.target.value))}
             />
             {telefoneError && <p className="text-sm mt-1 text-[#7B0000]">{telefoneError}</p>}
