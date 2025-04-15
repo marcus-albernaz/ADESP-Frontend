@@ -1,4 +1,4 @@
-import Header from "../components/Header";
+import Header from "../../components/Header";
 import { Card } from "@heroui/card";
 import {
   FireIcon,
@@ -9,45 +9,59 @@ import {
   ChevronRightIcon,
 } from "@heroicons/react/24/outline";
 import { motion } from "framer-motion";
-import { cardVariants, fadeUpTitle } from "../../core/animations/cardVariants";
-import star from "../assets/star.png";
-import returnIcon from "../assets/return.png";
+import { cardVariants, fadeUpTitle } from "../../../core/animations/cardVariants";
+import star from "../../assets/star.png";
+import returnIcon from "../../assets/return.png";
+import { useNavigate } from "react-router-dom";
+
 
 export default function MenuGastronomico() {
+  const navigate = useNavigate();
+  const userRole = "administrador";
+  
   const menuItems = [
     {
       title: "Votação",
-      description: "Veja o andamento da votação!",
+      description: "Participe da votação por aqui!",
       icon: <ClipboardDocumentListIcon className="w-6 h-6 text-white" />,
       bg: "#fb844a",
+      route: "",
+      roleRequired: "jurado",
     },
     {
-      title: "Restaurantes",
-      description: "Gerenciar Restaurantes",
+      title: "Estabelecimentos",
+      description: "Gerenciar Estabelecimentos",
       icon: <BuildingStorefrontIcon className="w-6 h-6 text-pink-900" />,
       bg: "#ffeac9",
+      route: "/admin/MenuEstabelecimentos",
     },
     {
       title: "Pratos",
       description: "Gerenciar Pratos",
       icon: <FireIcon className="w-6 h-6 text-pink-900" />,
       bg: "#ffeac9",
+      route: "/admin/menuPratos",
     },
     {
       title: "Jurados",
       description: "Gerenciar Jurados",
       icon: <UserGroupIcon className="w-6 h-6 text-pink-900" />,
       bg: "#ffeac9",
+      route: "/admin/menuJurados",
+      roleRequired: "administrador",
     },
     {
       title: "Relatórios",
       description: "Ver Relatórios",
       icon: <DocumentTextIcon className="w-6 h-6 text-pink-900" />,
       bg: "#ffeac9",
+      route: "",
+      roleRequired: "administrador",
     },
   ];
+  const filteredMenuItems = menuItems.filter(item => !item.roleRequired || item.roleRequired === userRole);
 
-  return (
+return (
     <div className="min-h-screen bg-[#2b1e49]">
       <Header />
 
@@ -69,7 +83,7 @@ export default function MenuGastronomico() {
           </motion.div>
 
           <div className="flex flex-col gap-4 w-full">
-            {menuItems.map((item, index) => (
+            {filteredMenuItems.map((item, index) => (
               <motion.div
                 key={item.title}
                 variants={cardVariants}
@@ -78,6 +92,7 @@ export default function MenuGastronomico() {
                 whileHover="whileHover"
                 whileTap={cardVariants.whileTap}
                 custom={index}
+                onClick={() => navigate(item.route)}
               >
                 <Card
                   className="hover:shadow-lg cursor-pointer p-4 flex items-left relative"

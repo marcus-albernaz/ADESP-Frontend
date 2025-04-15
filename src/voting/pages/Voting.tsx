@@ -5,7 +5,7 @@ import { Descrition } from "../components/Descrition";
 import "../styles/range.css";
 import returnImg from "../assets/return.png";
 
-const VALOR_INICIAL = 5.0;
+const VALOR_INICIAL = 7.50;
 
 function RatingInput({
   label,
@@ -146,11 +146,11 @@ export default function Voting() {
             onClick={handleSubmit}
             disabled={!todosForamAlterados}
             className={`w-full py-3 text-lg font-semibold text-white rounded-xl transition-all duration-300 ${todosForamAlterados
-                ? "bg-[#FB844A] hover:bg-[#D16E3E] animate-pulse"
-                : "bg-[#2B1E49] opacity-50 cursor-not-allowed"
+              ? "bg-[#FB844A] hover:bg-[#D16E3E] animate-pulse"
+              : "bg-[#2B1E49] opacity-50 cursor-not-allowed"
               }`}
           >
-            Enviar Voto
+            {todosForamAlterados ? "Enviar Voto" : "Preencha todos os quesitos"}
           </button>
 
         </section>

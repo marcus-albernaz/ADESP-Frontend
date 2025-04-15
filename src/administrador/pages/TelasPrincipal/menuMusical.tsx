@@ -1,4 +1,4 @@
-import Header from "../components/Header";
+import Header from "../../components/Header";
 import { Card } from "@heroui/card";
 import {
   UserGroupIcon,
@@ -8,19 +8,23 @@ import {
   DocumentTextIcon,
 } from "@heroicons/react/24/outline";
 import { motion } from "framer-motion";
-import { cardVariants, fadeUpTitle } from "../../core/animations/cardVariants";
-import star from "../assets/star.png";
-import returnIcon from "../assets/return.png";
+import { cardVariants, fadeUpTitle } from "../../../core/animations/cardVariants";
+import star from "../../assets/star.png";
+import returnIcon from "../../assets/return.png";
 
 export default function MenuMusical() {
+  const userRole = "administrador";
+
+
   const menuItems = [
     {
       title: "Votação",
-      description: "Veja o andamento da votação!",
+      description: "Participe da votação por aqui!",
       icon: <ClipboardDocumentListIcon className="w-6 h-6 text-white" />,
       bg: "#fb844a",
       isSpecial: true,
       route: "/admin/votacaoMusical",
+      roleRequired: "jurado",
     },
     {
       title: "Artistas",
@@ -35,6 +39,7 @@ export default function MenuMusical() {
       icon: <UserGroupIcon className="w-6 h-6 text-pink-900" />,
       bg: "#ffeac9",
       route: "/admin/jurados",
+      roleRequired: "administrador",
     },
     {
       title: "Relatórios",
@@ -42,8 +47,11 @@ export default function MenuMusical() {
       icon: <DocumentTextIcon className="w-6 h-6 text-pink-900" />,
       bg: "#ffeac9",
       route: "/admin/relatoriosMusical",
+      roleRequired: "administrador",
     },
   ];
+
+  const filteredMenuItems = menuItems.filter(item => !item.roleRequired || item.roleRequired === userRole);
 
   return (
     <div className="min-h-screen bg-[#2b1e49]">
@@ -64,7 +72,7 @@ export default function MenuMusical() {
           </motion.div>
 
           <div className="flex flex-col gap-4 w-full">
-            {menuItems.map((item, index) => (
+            {filteredMenuItems.map((item, index) => (
               <motion.div
                 key={item.title}
                 variants={cardVariants}

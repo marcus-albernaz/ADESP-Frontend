@@ -11,10 +11,15 @@ import Voting from "./voting/pages/Voting";
 import Final from "./voting/pages/Final";
 
 // Admin Pages
-import Menu from "./administrador/pages/menuPrincipal";
-import MenuGastronomico from "./administrador/pages/menuGastronomico";
-import MenuMusical from "./administrador/pages/menuMusical";
-import MenuJurados from "./administrador/pages/menuJurados";
+import Menu from "./administrador/pages/TelasPrincipal/menuPrincipal";
+import MenuGastronomico from "./administrador/pages/TelasPrincipal/menuGastronomico";
+import MenuMusical from "./administrador/pages/TelasPrincipal/menuMusical";
+import MenuAdmin from "./administrador/pages/GerenciarAdmins/menuAdmin";
+import MenuPratos from "./administrador/pages/FestivalGastronomico/MenuPratos"
+import MenuJurados from "./administrador/pages/FestivalGastronomico/MenuJurados";
+import MenuEstabelecimentos from "./administrador/pages/FestivalGastronomico/MenuEstabelecimentos";
+import MenuAddEstabelecimento from "./administrador/pages/FestivalGastronomico/AdicionarEstabelecimento"
+import AdicionarPrato from "./administrador/pages/FestivalGastronomico/AdicionarPrato";
 
 function App() {
   return (
@@ -43,7 +48,12 @@ function App() {
             <Route path="menuPrincipal" element={<Menu />} />
             <Route path="menuGastronomico" element={<MenuGastronomico />} />
             <Route path="menuMusical" element={<MenuMusical />} />
+            <Route path="menuAdmin" element={<MenuAdmin />} />
+            <Route path="menuPratos" element={<MenuPratos />} />
             <Route path="menuJurados" element={<MenuJurados />} />
+            <Route path="menuEstabelecimentos" element={<MenuEstabelecimentos />} />
+            <Route path="menuaddEstabelecimentos" element={<MenuAddEstabelecimento />} />
+            <Route path="menuAdicionarPrato" element={<AdicionarPrato />} />
           </Route>
         </Route>
 

@@ -1,6 +1,4 @@
-import Header from "../components/Header";
-import { Card } from "@heroui/card";
-
+import Header from "../../components/Header";
 import {
   UserGroupIcon,
   MusicalNoteIcon,
@@ -8,11 +6,12 @@ import {
   ChevronRightIcon,
 } from "@heroicons/react/24/outline";
 import { motion } from "framer-motion";
-import { cardVariants, fadeUpTitle } from "../../core/animations/cardVariants";
+import { cardVariants, fadeUpTitle } from "../../../core/animations/cardVariants";
 import { useNavigate } from "react-router-dom";
 
 export default function AdminPrincipal() {
   const navigate = useNavigate();
+  const userRole = "administrador";
 
   const menuItems = [
     {
@@ -31,9 +30,11 @@ export default function AdminPrincipal() {
       title: "Administradores",
       description: "Gerenciar Administradores",
       icon: <UserGroupIcon className="w-6 h-6 text-pink-900" />,
-      route: "/admin/MenuAdmin",
+      route: "/admin/menuAdmin",
+      roleRequired: "administrador",
     },
   ];
+  const filteredMenuItems = menuItems.filter(item => !item.roleRequired || item.roleRequired === userRole);
 
   return (
     <div className="min-h-screen bg-[#2b1e49]">
@@ -51,7 +52,7 @@ export default function AdminPrincipal() {
           </motion.h1>
 
           <div className="flex flex-col gap-4 w-full">
-            {menuItems.map((item, index) => (
+            {filteredMenuItems.map((item, index) => (
               <motion.div
                 key={item.title}
                 variants={cardVariants}
