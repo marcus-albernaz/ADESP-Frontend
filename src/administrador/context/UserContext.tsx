@@ -26,7 +26,7 @@ interface UserProviderProps {
 }
 
 export const UserProvider = ({ children }: UserProviderProps): JSX.Element => {
-  const [userRole, setUserRole] = useState<string>("jurado"); // ou "administrador"
+  const [userRole, setUserRole] = useState<string>("administrador"); // jurado ou "administrador"
 
   return (
     <UserContext.Provider value={{ userRole, setUserRole }}>

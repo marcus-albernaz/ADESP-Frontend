@@ -20,8 +20,21 @@ import MenuJurados from "./administrador/pages/FestivalGastronomico/MenuJurados"
 import MenuEstabelecimentos from "./administrador/pages/FestivalGastronomico/MenuEstabelecimentos";
 import MenuAddEstabelecimento from "./administrador/pages/FestivalGastronomico/AdicionarEstabelecimento"
 import AdicionarPrato from "./administrador/pages/FestivalGastronomico/AdicionarPrato";
+import GeraQRCodes from "./voting/pages/GerarQRCode"
+import { useState } from "react";
 
 function App() {
+
+  const [restaurantes] = useState([
+    { id: '1', nome: 'Restaurante A' },
+    { id: '2', nome: 'Restaurante B' },
+    { id: '3', nome: 'Restaurante C' },
+  ]);
+  
+  const handleGerarQRCodes = (restauranteId: string, quantidade: number) => {
+    console.log(`Gerando ${quantidade} QRCodes para o restaurante ${restauranteId}`);
+  };
+
   return (
     <AuthProvider>
       <Routes>
@@ -41,6 +54,8 @@ function App() {
             <Route path="access" element={<Access />} />
             <Route path="voting" element={<Voting />} />
             <Route path="final" element={<Final />} />
+             <Route path="gerar-qrcodes" element={<GeraQRCodes restaurantes={restaurantes} onGerar={handleGerarQRCodes} />}
+          />
           </Route>
 
           {/* 🛠️ Painel administrativo */}
