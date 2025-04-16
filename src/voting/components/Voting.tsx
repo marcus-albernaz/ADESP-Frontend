@@ -77,8 +77,8 @@ export default function Voting({ onNavigate, formRegister, submitHandler }: Vote
   const categoria = 2;
 
   const perguntasPorCategoria: Record<number, string[]> = {
-    1: ["Sabor", "Apresentação", "Criatividade", "Originalidade", "Harmonia", "Sabor"],
-    2: ["Melodia", "Ritmo", "Cantor", "Originalidade"]
+    1: ["Sabor", "Apresentação", "Criatividade", "Originalidade", "Atendimento"],
+    2: ["Composição", "Melodia", "Interpretação", "Conjunto da Obra"]
   };
 
   const criterios = perguntasPorCategoria[categoria] || [];

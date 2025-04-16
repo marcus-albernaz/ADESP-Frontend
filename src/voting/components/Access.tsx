@@ -8,6 +8,7 @@ import Footer from "./Footer";
 import { motion } from "framer-motion";
 import { fadeUpTitle } from "@/core/animations/cardVariants";
 import { AccessScreenPropTypes, VoteRequest } from "../types";
+import { cpf as cpfValidator } from "cpf-cnpj-validator";
 
 // Máscara de CPF
 function maskCPF(value: string): string {
@@ -41,7 +42,8 @@ export default function Access({ onNavigate, formRegister }: AccessScreenPropTyp
   const handleSubmit = () => {
     let valid = true;
 
-    const isCpfValid = /^\d{3}\.\d{3}\.\d{3}-\d{2}$/.test(cpf);
+    const rawCpf = cpfValidator.strip(cpf); // remove pontos e traços
+    const isCpfValid = cpfValidator.isValid(rawCpf);
     const isNomeValid = nome.trim().length >= 3;
     const isTelefoneValid = /^\(\d{2}\) \d{5}-\d{4}$/.test(telefone);
 
@@ -67,7 +69,7 @@ export default function Access({ onNavigate, formRegister }: AccessScreenPropTyp
     }
 
     if (valid) {
-      onNavigate("voting")
+      onNavigate("voting");
     }
   };
 
