@@ -4,7 +4,7 @@ import Voting from "../components/Voting";
 import Final from "../components/Final";
 import { useForm } from "react-hook-form";
 import { VoteRequest } from "../types";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import festivalApi from "@/core/api/api";
 
 export default function Vote(){
