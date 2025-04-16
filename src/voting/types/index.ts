@@ -1,3 +1,4 @@
+import { AxiosResponse } from "axios"
 import { UseFormRegister } from "react-hook-form"
 
 export type VoteRequest = {
@@ -18,7 +19,10 @@ export type AccessScreenPropTypes = {
 }
 
 export type VoteScreenPropTypes = {
+    votingResponse: AxiosResponse<any, any> | undefined,
     onNavigate: (screen: string) => void,
     formRegister: UseFormRegister<VoteRequest>,
-    submitHandler: () => void
+    submitHandler: () => void,
+    restaurantName: string,
+    dishName: string
 }

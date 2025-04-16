@@ -4,9 +4,8 @@ import Header from "./Header";
 import { Descrition } from "./Descrition";
 import "../styles/range.css";
 import returnImg from "../assets/return.png";
-import { VoteRequest, VoteScreenPropTypes } from "../types";
-import { UseFormRegister, UseFormRegisterReturn } from "react-hook-form";
-import castStringToLiteral from "../services/castStringToLiteral";
+import { VoteScreenPropTypes } from "../types";
+import { UseFormRegisterReturn } from "react-hook-form";
 
 const VALOR_INICIAL = 7.50;
 
@@ -69,11 +68,9 @@ function RatingInput({
   );
 }
 
-export default function Voting({ onNavigate, formRegister, submitHandler }: VoteScreenPropTypes) {
+export default function Voting({ restaurantName, dishName, votingResponse, onNavigate, formRegister, submitHandler }: VoteScreenPropTypes) {
   const navigate = useNavigate();
 
-  const lugar = "Restaurante Araguaia";
-  const prato = "Lasanha";
   const categoria = 2;
 
   const perguntasPorCategoria: Record<number, string[]> = {
@@ -100,7 +97,8 @@ export default function Voting({ onNavigate, formRegister, submitHandler }: Vote
 
   const handleSubmit = () => {
     submitHandler();
-    navigate("/vote/final");
+    console.log(votingResponse?.status)
+    navigate("/voting/final");
   };
 
   return (
@@ -134,7 +132,7 @@ export default function Voting({ onNavigate, formRegister, submitHandler }: Vote
           <h3 className="text-base sm:text-lg font-light mb-1">
             Você está votando em:
           </h3>
-          <Descrition owner={lugar} desc={prato} className="text-white" />
+          <Descrition owner={restaurantName} desc={dishName} className="text-white" />
         </section>
 
         {/* Formulário de notas */}
@@ -147,7 +145,7 @@ export default function Voting({ onNavigate, formRegister, submitHandler }: Vote
             />
             <RatingInput
               label={"Apresentação"}
-              initialValue={8}
+              initialValue={VALOR_INICIAL}
               onChange={(value) => handleNotaChange(1, value)}
               formRegister={formRegister("presentation")}
             />
