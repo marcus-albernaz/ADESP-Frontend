@@ -54,7 +54,6 @@ function App() {
           <Route path="voting" element={<Outlet />}>
             <Route path="vote" element={<Vote />} />
             <Route path="final" element={<Final />} />
-          />
           </Route>
 
           {/* 🛠️ Painel administrativo */}
@@ -68,7 +67,7 @@ function App() {
             <Route path="menuEstabelecimentos" element={<MenuEstabelecimentos />} />
             <Route path="menuaddEstabelecimentos" element={<MenuAddEstabelecimento />} />
             <Route path="menuAdicionarPrato" element={<AdicionarPrato />} />
-            <Route path="gerar-qrcodes" element={<GeraQRCodes restaurantes={restaurantes} onGerar={handleGerarQRCodes}}/>
+            <Route path="gerar-qrcodes" element={<GeraQRCodes restaurantes={restaurantes} onGerar={handleGerarQRCodes}/>} />
           </Route>
         </Route>
 
