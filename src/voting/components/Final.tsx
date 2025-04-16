@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import confetti from "canvas-confetti";
 import imgVotation2 from "../assets/votation2.png";
-import Footer from "../components/Footer";
+import Footer from "./Footer";
 import logo from "/Logo_Festival1.png";
 
 export default function Final() {

@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "../components/Header";
-import { Descrition } from "../components/Descrition";
+import Header from "./Header";
+import { Descrition } from "./Descrition";
 import "../styles/range.css";
 import returnImg from "../assets/return.png";
+import { VoteRequest, VoteScreenPropTypes } from "../types";
+import { UseFormRegister, UseFormRegisterReturn } from "react-hook-form";
+import castStringToLiteral from "../services/castStringToLiteral";
 
 const VALOR_INICIAL = 7.50;
 
@@ -11,10 +14,12 @@ function RatingInput({
   label,
   initialValue,
   onChange,
+  formRegister
 }: {
   label: string;
   initialValue: number;
   onChange: (value: number) => void;
+  formRegister: UseFormRegisterReturn<string>
 }) {
   const [value, setValue] = useState(initialValue);
 
@@ -45,6 +50,7 @@ function RatingInput({
           min="0"
           max="10"
           step="0.01"
+          {...formRegister}
           value={value}
           onChange={handleChange}
           className="w-full h-2 appearance-none bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 rounded-lg"
@@ -63,7 +69,7 @@ function RatingInput({
   );
 }
 
-export default function Voting() {
+export default function Voting({ onNavigate, formRegister, submitHandler }: VoteScreenPropTypes) {
   const navigate = useNavigate();
 
   const lugar = "Restaurante Araguaia";
@@ -71,8 +77,8 @@ export default function Voting() {
   const categoria = 2;
 
   const perguntasPorCategoria: Record<number, string[]> = {
-    1: ["1-Sabor", "2-Temperatura", "3-Apresentação", "4-Harmonia"],
-    2: ["1-Melodia", "2-Ritmo", "3-Cantor", "4-Originalidade"],
+    1: ["Sabor", "Apresentação", "Criatividade", "Originalidade", "Harmonia", "Sabor"],
+    2: ["Melodia", "Ritmo", "Cantor", "Originalidade"]
   };
 
   const criterios = perguntasPorCategoria[categoria] || [];
@@ -93,7 +99,7 @@ export default function Voting() {
   const todosForamAlterados = alterados.every(Boolean);
 
   const handleSubmit = () => {
-    console.log("Notas enviadas:", notas);
+    submitHandler();
     navigate("/vote/final");
   };
 
@@ -106,7 +112,7 @@ export default function Voting() {
         <div className="w-full max-w-2xl flex items-center justify-between mb-6">
           <div className="flex items-center gap-3 mt-3 w-full justify-start max-w-2xl mb-4">
             <button
-              onClick={() => navigate(-1)}
+              onClick={() => onNavigate("initial")}
               className="hover:opacity-80"
             >
               <img
@@ -133,15 +139,36 @@ export default function Voting() {
 
         {/* Formulário de notas */}
         <section className="w-full max-w-2xl bg-[#3A2D5D] p-6 rounded-2xl shadow-xl space-y-8">
-          {criterios.map((criterio, index) => (
             <RatingInput
-              key={index}
-              label={criterio}
+              label={"Atendimento"}
               initialValue={VALOR_INICIAL}
-              onChange={(value) => handleNotaChange(index, value)}
+              onChange={(value) => handleNotaChange(0, value)}
+              formRegister={formRegister("treatment")}
             />
-          ))}
-
+            <RatingInput
+              label={"Apresentação"}
+              initialValue={8}
+              onChange={(value) => handleNotaChange(1, value)}
+              formRegister={formRegister("presentation")}
+            />
+            <RatingInput
+              label={"Criatividade"}
+              initialValue={VALOR_INICIAL}
+              onChange={(value) => handleNotaChange(2, value)}
+              formRegister={formRegister("creativity")}
+            />
+            <RatingInput
+              label={"Originalidade"}
+              initialValue={VALOR_INICIAL}
+              onChange={(value) => handleNotaChange(3, value)}
+              formRegister={formRegister("originality")}
+            />
+            <RatingInput
+              label={"Sabor"}
+              initialValue={VALOR_INICIAL}
+              onChange={(value) => handleNotaChange(4, value)}
+              formRegister={formRegister("flavor")}
+            />
           <button
             onClick={handleSubmit}
             disabled={!todosForamAlterados}

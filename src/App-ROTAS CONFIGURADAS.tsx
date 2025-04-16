@@ -2,9 +2,9 @@ import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import LoginPage from "./authentication/pages/Login";
 import AuthProvider, { useAuth } from "./authentication/contexts/AuthContext";
 import SignUpPage from "./authentication/pages/SignUp";
-import Access from "./voting/pages/Access";
-import Voting from "./voting/pages/Voting";
-import Final from "./voting/pages/Final";
+import Access from "./voting/components/Access";
+import Voting from "./voting/components/Voting";
+import Final from "./voting/components/Final";
 import Menu from "./Admin/page";
 
 const ProtectedRoute = () => {

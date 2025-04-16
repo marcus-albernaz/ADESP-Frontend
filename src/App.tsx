@@ -6,9 +6,9 @@ import LoginPage from "./authentication/pages/Login";
 import SignUpPage from "./authentication/pages/SignUp";
 
 // Voting Pages
-import Access from "./voting/pages/Access";
-import Voting from "./voting/pages/Voting";
-import Final from "./voting/pages/Final";
+import Access from "./voting/components/Access";
+import Voting from "./voting/components/Voting";
+import Final from "./voting/components/Final";
 
 // Admin Pages
 import Menu from "./administrador/pages/TelasPrincipal/menuPrincipal";
@@ -22,6 +22,7 @@ import MenuAddEstabelecimento from "./administrador/pages/FestivalGastronomico/A
 import AdicionarPrato from "./administrador/pages/FestivalGastronomico/AdicionarPrato";
 import GeraQRCodes from "./voting/pages/GerarQRCode"
 import { useState } from "react";
+import Vote from "./voting/pages/Vote";
 
 function App() {
 
@@ -50,11 +51,9 @@ function App() {
           <Route index element={<Navigate to="/vote/access" />} />
 
           {/* 🗳️ Fluxo de votação */}
-          <Route path="vote" element={<Outlet />}>
-            <Route path="access" element={<Access />} />
-            <Route path="voting" element={<Voting />} />
+          <Route path="voting" element={<Outlet />}>
+            <Route path="vote" element={<Vote />} />
             <Route path="final" element={<Final />} />
-             <Route path="gerar-qrcodes" element={<GeraQRCodes restaurantes={restaurantes} onGerar={handleGerarQRCodes} />}
           />
           </Route>
 
@@ -69,6 +68,7 @@ function App() {
             <Route path="menuEstabelecimentos" element={<MenuEstabelecimentos />} />
             <Route path="menuaddEstabelecimentos" element={<MenuAddEstabelecimento />} />
             <Route path="menuAdicionarPrato" element={<AdicionarPrato />} />
+            <Route path="gerar-qrcodes" element={<GeraQRCodes restaurantes={restaurantes} onGerar={handleGerarQRCodes}}/>
           </Route>
         </Route>
 
