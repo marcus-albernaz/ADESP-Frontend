@@ -99,7 +99,6 @@ export default function Voting({ onNavigate, formRegister, submitHandler }: Vote
   const todosForamAlterados = alterados.every(Boolean);
 
   const handleSubmit = () => {
-    console.log("Notas enviadas:", notas);
     submitHandler();
     navigate("/vote/final");
   };
@@ -113,7 +112,7 @@ export default function Voting({ onNavigate, formRegister, submitHandler }: Vote
         <div className="w-full max-w-2xl flex items-center justify-between mb-6">
           <div className="flex items-center gap-3 mt-3 w-full justify-start max-w-2xl mb-4">
             <button
-              onClick={() => navigate(-1)}
+              onClick={() => onNavigate("initial")}
               className="hover:opacity-80"
             >
               <img
