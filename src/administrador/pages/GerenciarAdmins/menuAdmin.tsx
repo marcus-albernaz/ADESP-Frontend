@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Header from "../../components/Header";
-import returnIcon from "../../assets/return.png";
 import { motion } from "framer-motion";
 import { fadeUpTitle } from "../../../core/animations/cardVariants";
 import {
@@ -11,10 +10,12 @@ import {
   TableRow,
   TableCell,
 } from "@heroui/table";
-import ConvidarIcone from "../../assets/convidarIco.png";
-import { CheckIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { PowerIcon, UserPlusIcon, ChevronLeftIcon } from "@heroicons/react/24/outline";
 import ConvidarAdministradorModal from "../../components/GerenciarAdmins/ConvidarAdministradorModal";
 import DesativarAdministradorModal from "../../components/GerenciarAdmins/DesativarAdministradorModal";
+import { Button } from "@heroui/button";
+import { useUser } from "../../context/UserContext";
+import PermissaoNegada from "../../components/PermissaoNegada"
 
 const administradoresIniciais = [
   {
@@ -48,6 +49,12 @@ export default function MenuAdministradores() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDesativarModalOpen, setIsDesativarModalOpen] = useState(false); // Estado para controlar a modal de desativação
   const [administradorParaDesativar, setAdministradorParaDesativar] = useState<string | null>(null); // ID do administrador a ser desativado
+  const { userRole } = useUser();
+  const isJurado = userRole === "jurado";
+
+  if (isJurado) {
+    return <PermissaoNegada onVoltar={() => window.history.back()} />;
+  }
 
   const alternarStatus = (id: string) => {
     const administrador = administradores.find((a) => a.id === id);
@@ -71,12 +78,16 @@ export default function MenuAdministradores() {
           ? { ...a, status: "Inativo" }
           : a
       );
+      
+      console.log("Administrador desativado:", administradorParaDesativar);
+      console.log("Novo estado:", atualizados);
+  
       setAdministradores(atualizados);
       setIsDesativarModalOpen(false);
       setAdministradorParaDesativar(null);
     }
   };
-
+  
   return (
     <div className="min-h-screen bg-[#2b1e49]">
       <Header />
@@ -84,26 +95,28 @@ export default function MenuAdministradores() {
       <div className="flex flex-col items-center py-6 px-5">
         <div className="w-full max-w-4xl">
           {/* Título e botão de voltar */}
-          <motion.div className="flex items-center gap-3 mb-2" {...fadeUpTitle}>
-            <img
-              src={returnIcon}
-              alt="Voltar"
-              className="w-8 h-8 cursor-pointer"
+          <motion.div className="flex items-center gap-3 mb-4" {...fadeUpTitle}>
+            <Button
               onClick={() => window.history.back()}
-            />
+              className="bg-[#FB844A] rounded-md px-1.5 py-0.5 text-white text-sm flex items-center w-10 min-w-0"
+            >
+              <ChevronLeftIcon className="w-5 h-5" />
+            </Button>
+
+
             <h1 className="text-3xl font-bold text-[#fee9c9] font-title">
-              Gerenciamento de Administradores
+              Administradores
             </h1>
           </motion.div>
 
-          <div className="flex justify-start mb-6">
-            <button
+          <div className="flex justify-start mb-4">
+            <Button
               onClick={() => setIsModalOpen(true)}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg text-white font-semibold bg-[#fb844a]"
+              className="flex items-center gap-2 px-3 py-2 rounded-lg text-white text-base font-semibold bg-[#fb844a]"
             >
-              <img src={ConvidarIcone} alt="ico" />
+              <UserPlusIcon className="w-6 h-6" />
               Convidar Administrador
-            </button>
+            </Button>
             <ConvidarAdministradorModal
               isOpen={isModalOpen}
               onClose={() => setIsModalOpen(false)}  // Passa diretamente a função para fechar o modal
@@ -115,8 +128,8 @@ export default function MenuAdministradores() {
           </div>
 
           {/* Tabela */}
-          <div className="bg-white rounded-2xl shadow-lg p-4">
-            <Table aria-label="Tabela de Administradores">
+          <div className="bg-white rounded-xl">
+            <Table aria-label="Tabela de Administradores" className="text-sm md:text-base min-w-full">
               <TableHeader>
                 <TableColumn>Nome</TableColumn>
                 <TableColumn>Status</TableColumn>
@@ -125,32 +138,24 @@ export default function MenuAdministradores() {
 
               <TableBody emptyContent="Nenhum administrador cadastrado ainda.">
                 {administradores.map((administrador) => (
-                  <TableRow key={administrador.id}>
-                    <TableCell>{administrador.nome}</TableCell>
-                    <TableCell>
-                      <span
-                        className={`font-bold ${administrador.status === "Ativo" ? "text-green-500" : "text-red-500"
-                          }`}
-                      >
+                  <TableRow key={administrador.id} className="hover:bg-gray-100 transition">
+                    <TableCell className="py-4">{administrador.nome}</TableCell>
+                    <TableCell className="py-4">
+                      <span className={`font-bold ${administrador.status === "Ativo" ? "text-green-500" : "text-red-500"}`}>
                         {administrador.status}
                       </span>
                     </TableCell>
-                    <TableCell>
-                      <button
+                    <TableCell className="py-3">
+                      <Button
                         onClick={() => alternarStatus(administrador.id)}
-                        className={`p-2 rounded-full transition-colors duration-300 ${administrador.status === "Ativo"
-                          ? "text-red-500 hover:bg-red-100"
-                          : "text-green-500 hover:bg-green-100"
+                        className={`w-12 h-12 flex items-center justify-center rounded-full transition-colors duration-300 ${administrador.status === "Ativo"
+                            ? "bg-[#12a489]"
+                            : "bg-[#fa0132]"
                           }`}
                         title={`${administrador.status === "Ativo" ? "Desativar" : "Ativar"} administrador`}
                       >
-                        {administrador.status === "Ativo" ? (
-                          <XMarkIcon className="h-7 w-7" />
-                        ) : (
-                          <CheckIcon className="h-7 w-7" />
-                        )}
-                      </button>
-
+                        <PowerIcon className="h-6 w-6 text-black" />
+                      </Button>
                     </TableCell>
                   </TableRow>
                 ))}

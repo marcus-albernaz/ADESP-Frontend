@@ -18,11 +18,14 @@ import MenuAdmin from "./administrador/pages/GerenciarAdmins/menuAdmin";
 import MenuPratos from "./administrador/pages/FestivalGastronomico/MenuPratos"
 import MenuJurados from "./administrador/pages/FestivalGastronomico/MenuJurados";
 import MenuEstabelecimentos from "./administrador/pages/FestivalGastronomico/MenuEstabelecimentos";
-import MenuAddEstabelecimento from "./administrador/pages/FestivalGastronomico/AdicionarEstabelecimento"
-import AdicionarPrato from "./administrador/pages/FestivalGastronomico/AdicionarPrato";
-import GeraQRCodes from "./voting/pages/GerarQRCode"
+import MenuAddEstabelecimento from "./administrador/components/GerenciarEstabelecimento/AdicionarEstabelecimento"
+import AdicionarPrato from "./administrador/components/GerenciarPrato/AdicionarPrato";
+import GeraQRCodesGastronomico from "./voting/pages/FestivalGastronomico/GerarQRCodeGastronomico"
+import GeraQRCodesMusical from "./voting/pages/FestivalMusical/GerarQRCodeMusical"
 import { useState } from "react";
 import Vote from "./voting/pages/Vote";
+import EditarPrato from "./administrador/components/GerenciarPrato/EditarPrato"
+import EditarEstabelecimento from "./administrador/components/GerenciarEstabelecimento/EditarEstabelecimento"
 
 function App() {
 
@@ -48,13 +51,13 @@ function App() {
         {/* 🌐 Rotas principais do sistema */}
         <Route path="/" element={<Outlet />}>
           {/* Redirecionamento padrão para tela de acesso à votação */}
-          <Route index element={<Navigate to="/vote/access" />} />
+          <Route index element={<Navigate to="/voting/vote" />} />
 
           {/* 🗳️ Fluxo de votação */}
           <Route path="voting" element={<Outlet />}>
             <Route path="vote" element={<Vote />} />
             <Route path="final" element={<Final />} />
-          />
+
           </Route>
 
           {/* 🛠️ Painel administrativo */}
@@ -68,7 +71,11 @@ function App() {
             <Route path="menuEstabelecimentos" element={<MenuEstabelecimentos />} />
             <Route path="menuaddEstabelecimentos" element={<MenuAddEstabelecimento />} />
             <Route path="menuAdicionarPrato" element={<AdicionarPrato />} />
-            <Route path="gerar-qrcodes" element={<GeraQRCodes restaurantes={restaurantes} onGerar={handleGerarQRCodes}}/>
+            <Route path="gerar-qrcodes-gastronomico" element={<GeraQRCodesGastronomico restaurantes={restaurantes} onGerar={handleGerarQRCodes} />}/>
+            <Route path="gerar-qrcodes-musical" element={<GeraQRCodesMusical restaurantes={restaurantes} onGerar={handleGerarQRCodes} />}/>
+            <Route path="EditarPrato" element={<EditarPrato />} />
+            <Route path="EditarEstabelecimento" element={<EditarEstabelecimento />} />
+            
           </Route>
         </Route>
 

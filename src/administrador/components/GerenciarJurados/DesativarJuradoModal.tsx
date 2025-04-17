@@ -1,11 +1,13 @@
 import { Dialog } from "@headlessui/react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react"; // Importando useState
-import Warning from "../../assets/warning_2.png";
-import CustomAlert from "../../components/CustomAlert"; // Certifique-se de importar o CustomAlert
+import { useState } from "react";
+import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
+import CustomAlert from "../../components/CustomAlert";
+import { Button } from "@heroui/button";
 
 interface Props {
   isOpen: boolean;
+  onOpenChange?: (open: boolean) => void;
   onClose: () => void;
   onConfirm: () => void;
 }
@@ -36,14 +38,16 @@ export default function DesativarJuradoModal({
               transition={{ duration: 0.2 }}
               className="bg-white/90 backdrop-blur-md rounded-2xl max-w-md w-full p-6 shadow-2xl"
             >
-              {/* Espaço para imagem */}
               <div className="flex justify-center mb-4">
-                {/* Exemplo de placeholder para imagem */}
-                <img
-                  src={Warning}
-                  alt="Aviso"
-                  className="w-20 h-20 rounded-2xl object-cover"
-                />
+              <Button
+                  isIconOnly
+                  className="w-20 h-20 rounded-2xl flex items-center justify-center"
+                  style={{ backgroundColor: "#f7ae89" }}
+                  title="Aviso"
+                  disabled
+                >
+                  <ExclamationCircleIcon className="w-12 h-12" style={{ color: "#ff5b0b" }} />
+                </Button>
               </div>
 
               <Dialog.Title className="text-xl font-semibold text-gray-800 text-center">

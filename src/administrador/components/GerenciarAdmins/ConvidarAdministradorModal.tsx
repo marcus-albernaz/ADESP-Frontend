@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Input } from "@heroui/input";
 import { useState } from "react";
 import CustomAlert from "../CustomAlert";
+import { Button } from "@heroui/button";
 
 interface Props {
   isOpen: boolean;
@@ -56,8 +57,7 @@ export default function ConvidarAdministradorModal({
                   Convidar Administrador
                 </Dialog.Title>
                 <Dialog.Description className="text-gray-600 mt-2 text-left">
-                  No campo abaixo, determine o e-mail do Administrador que fará
-                  parte da gestão do festival.
+                  No campo abaixo, determine o e-mail do Administrador que fará parte da gestão do festival.
                 </Dialog.Description>
 
                 <form onSubmit={handleSubmit}>
@@ -74,14 +74,13 @@ export default function ConvidarAdministradorModal({
                   </div>
 
                   <div className="mt-6 flex justify-center gap-3">
-                    <button
+                    <Button
                       type="submit"
                       className="w-full px-4 py-2 rounded-lg text-white bg-[#43b7a3] hover:bg-[#2D7A6D] transition"
                     >
                       Enviar Convite
-                    </button>
-                    <button
-                      type="button"
+                    </Button>
+                    <Button
                       onClick={() => {
                         setEmail(""); // Limpar o campo de e-mail
                         onClose();    // Fechar o modal
@@ -89,7 +88,7 @@ export default function ConvidarAdministradorModal({
                       className="w-full px-4 py-2 rounded-lg text-gray-700 bg-[#d4d4d8] hover:bg-[#B9B9BD] transition"
                     >
                       Cancelar
-                    </button>
+                    </Button>
                   </div>
                 </form>
               </motion.div>

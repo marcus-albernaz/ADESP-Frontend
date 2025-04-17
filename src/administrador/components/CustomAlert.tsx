@@ -1,6 +1,5 @@
 import { Alert } from "@heroui/alert";
-import tick_circle from "../assets/tick_circle.png";
-import error_icon from "../assets/warning.png";
+import { ExclamationTriangleIcon, CheckCircleIcon } from "@heroicons/react/24/outline";
 
 type AlertType = "success" | "error";
 
@@ -19,26 +18,23 @@ export default function CustomAlert({
   isVisible,
   onClose,
 }: CustomAlertProps) {
-  const icon = type === "success" ? tick_circle : error_icon;
+  const Icon = type === "success" ? CheckCircleIcon : ExclamationTriangleIcon;
   const textClass = type === "success" ? "text-green-700" : "text-red-700";
   const foregroundClass = type === "success" ? "text-green-600" : "text-red-600";
 
   return (
     <Alert
-      hideIconWrapper
       color={type === "success" ? "success" : "danger"}
       variant="faded"
       isVisible={isVisible}
       isClosable
       onClose={onClose}
-      className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 w-[90%] max-w-xl md:max-w-2xl rounded-md shadow-lg px-4 py-2"
+      className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-xl md:max-w-2xl rounded-lg shadow-lg py-5 bg-white"
+      icon={<Icon className={`w-15 h-15 ${foregroundClass}`} />} // Aumentando o ícone aqui
     >
-      <div className="flex items-center gap-3 w-full">
-        <img src={icon} alt={type} className="h-5 w-5" />
-        <div className="w-full text-left">
-          <h3 className={`font-semibold text-base ${textClass}`}>{title}</h3>
-          <p className={`text-sm ${foregroundClass}`}>{message}</p>
-        </div>
+      <div className="text-left">
+        <h3 className={`font-semibold text-base ${textClass}`}>{title}</h3>
+        <p className={`text-sm ${foregroundClass}`}>{message}</p>
       </div>
     </Alert>
   );

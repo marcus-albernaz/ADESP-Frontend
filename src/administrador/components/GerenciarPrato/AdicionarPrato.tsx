@@ -1,35 +1,40 @@
 import { useState } from "react";
-import Header from "../../components/Header";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { fadeUpTitle } from "../../../core/animations/cardVariants";
+import { ChevronLeftIcon} from "@heroicons/react/24/outline";
+import Header from "../Header";
 import { Input } from "@heroui/input";
 import { Checkbox } from "@heroui/checkbox";
 import { Button } from "@heroui/button";
-import ReturnIcon from "../../assets/return.png";
+import { fadeUpTitle } from "../../../core/animations/cardVariants";
 import { useUser } from "../../context/UserContext";
+import PermissaoNegada from "../../components/PermissaoNegada"
 
 export default function AdicionarPrato() {
   const [nome, setNome] = useState("");
   const [restaurante, setRestaurante] = useState("");
-  const [tipoPrato, setTipoPrato] = useState(""); // Inicialmente vazio
+  const [tipoPrato, setTipoPrato] = useState("");
   const [inativo, setInativo] = useState(false);
-  const [erro, setErro] = useState(""); // Estado para mensagens de erro
+  const [erro, setErro] = useState("");
 
   const navigate = useNavigate();
-
   const { userRole } = useUser();
+
+  const isJurado = userRole === "jurado";
+  const isAdmin = userRole === "administrador"; // caso use esse termo no contexto
+
+  if (isJurado) {
+    return <PermissaoNegada onVoltar={() => window.history.back()} />;
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Verificando se todos os campos obrigatórios estão preenchidos
     if (!nome || !restaurante || !tipoPrato) {
       setErro("Por favor, preencha todos os campos obrigatórios!");
       return;
     }
 
-    // Se tudo estiver certo, limpa a mensagem de erro
     setErro("");
 
     console.log({
@@ -48,9 +53,12 @@ export default function AdicionarPrato() {
 
       <div className="flex flex-col px-5 py-6 max-w-4xl mx-auto w-full">
         <div className="flex items-center gap-3 mb-6">
-          <button onClick={() => navigate(-1)}>
-            <img src={ReturnIcon} alt="Voltar" className="w-8 h-8 cursor-pointer" />
-          </button>
+          <Button
+            onClick={() => window.history.back()}
+            className="bg-[#FB844A] rounded-md px-1.5 py-0.5 text-white text-sm flex items-center w-10 min-w-0"
+          >
+            <ChevronLeftIcon className="w-5 h-5" />
+          </Button>
 
           <motion.h1
             className="text-3xl font-bold text-[#fee9c9] font-title"
@@ -60,38 +68,43 @@ export default function AdicionarPrato() {
           </motion.h1>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Formulário disponível para administradores */}
+        <form onSubmit={handleSubmit} className="space-y-5">
+          {/* Campo Nome */}
           <Input
-            label="Nome do Prato"
+            label={
+              <span className="text-black text-base font-medium">
+                Nome do Prato
+              </span>
+            }
             value={nome}
             onChange={(e) => setNome(e.target.value)}
             placeholder="Digite o nome do prato"
             required
-            disabled={userRole === "jurado"} // Desabilitando campo
+            disabled={isJurado}
           />
 
-          {/* Dropdown Restaurante */}
+          {/* Campo Estabelecimento */}
           <div>
-            <label className="block text-white text-sm font-medium mb-1">
-              Restaurante
+            <label className="block text-white text-lg font-medium mb-1">
+              Estabelecimento
             </label>
             <select
               value={restaurante}
               onChange={(e) => setRestaurante(e.target.value)}
               className="w-full p-3 rounded-lg bg-white text-black"
-              required
-              disabled={userRole === "jurado"} // Desabilitando campo
+              disabled={isJurado}
             >
-              <option value="">Selecione o restaurante</option>
+              <option value="">Selecione o Estabelecimento</option>
               <option value="Restaurante A">Restaurante A</option>
               <option value="Restaurante B">Restaurante B</option>
               <option value="Restaurante C">Restaurante C</option>
             </select>
           </div>
 
-          {/* Tipo de Prato */}
+          {/* Campo Tipo de Prato */}
           <div className="w-full">
-            <label className="block text-white text-sm font-medium mb-1">
+            <label className="block text-white text-lg font-medium mb-1">
               Tipo de Prato
             </label>
             <div className="bg-white p-4 rounded-xl shadow-lg">
@@ -105,9 +118,9 @@ export default function AdicionarPrato() {
                     checked={tipoPrato === "restaurante"}
                     onChange={() => setTipoPrato("restaurante")}
                     className="mr-2"
-                    disabled={userRole === "jurado"} // Desabilitando campo
+                    disabled={isJurado}
                   />
-                  <label htmlFor="restaurante" className="text-black text-sm font-medium">
+                  <label htmlFor="restaurante" className="text-black text-base font-medium">
                     Restaurante
                   </label>
                 </div>
@@ -121,9 +134,9 @@ export default function AdicionarPrato() {
                     checked={tipoPrato === "similar"}
                     onChange={() => setTipoPrato("similar")}
                     className="mr-2"
-                    disabled={userRole === "jurado"} // Desabilitando campo
+                    disabled={isJurado}
                   />
-                  <label htmlFor="similar" className="text-black text-sm font-medium">
+                  <label htmlFor="similar" className="text-black text-base font-medium">
                     Similar
                   </label>
                 </div>
@@ -131,29 +144,31 @@ export default function AdicionarPrato() {
             </div>
           </div>
 
-          {/* Checkbox Inativo */}
-          <div className="flex items-center gap-2 mt-2">
-            <Checkbox
-              checked={inativo}
-              onChange={(e) => setInativo(e.target.checked)}
-              id="inativo"
-              disabled={userRole === "jurado"} // Desabilitando checkbox
-            />
-            <label htmlFor="inativo" className="text-sm font-medium text-white">
-              Inativo
-            </label>
-          </div>
+          {/* Opção de marcar como inativo - Apenas para administradores */}
+          {isAdmin && (
+            <div className="flex items-center gap-2 mt-2">
+              <Checkbox
+                checked={inativo}
+                onChange={(e) => setInativo(e.target.checked)}
+                id="inativo"
+              />
+              <label htmlFor="inativo" className="text-sm font-medium text-white">
+                Inativo
+              </label>
+            </div>
+          )}
 
-          {/* Mensagem de erro */}
+          {/* Erro de validação */}
           {erro && (
             <div className="text-[#fe0034] text-sm mt-2 font-semibold">
               <p>{erro}</p>
             </div>
           )}
 
-          {/* Botões */}
+          {/* Botões de ação */}
           <div className="pt-6 flex flex-col gap-3">
-            {userRole !== "jurado" && ( // Exibir botão "Cadastrar" apenas para administrador
+            {/* Apenas administradores podem cadastrar */}
+            {isAdmin && (
               <Button
                 type="submit"
                 className="bg-[#fb844a] text-white w-full text-base py-6"
@@ -161,12 +176,13 @@ export default function AdicionarPrato() {
                 Cadastrar
               </Button>
             )}
+
+            {/* Jurados e administradores podem cancelar */}
             <Button
-              type="button"
               onClick={() => navigate(-1)}
-              className="text-black w-full text-base bg-[#d4d4d8]"
+              className="text-black w-full text-base bg-[#d4d4d8] py-6"
             >
-              Cancelar
+              {isJurado ? "Voltar" : "Cancelar"}
             </Button>
           </div>
         </form>

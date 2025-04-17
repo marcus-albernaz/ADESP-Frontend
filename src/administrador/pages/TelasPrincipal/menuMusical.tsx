@@ -6,17 +6,20 @@ import {
   ClipboardDocumentListIcon,
   ChevronRightIcon,
   DocumentTextIcon,
+  UserIcon,
+  QrCodeIcon,
 } from "@heroicons/react/24/outline";
 import { motion } from "framer-motion";
 import { cardVariants, fadeUpTitle } from "../../../core/animations/cardVariants";
 import star from "../../assets/star.png";
-import returnIcon from "../../assets/return.png";
+import { ChevronLeftIcon } from "@heroicons/react/24/outline";
 import { useUser } from "../../context/UserContext";
-
+import { Button } from "@heroui/button";
+import { useNavigate } from "react-router-dom";
 
 export default function MenuMusical() {
   const { userRole } = useUser();
-
+  const navigate = useNavigate();
 
   const menuItems = [
     {
@@ -25,15 +28,30 @@ export default function MenuMusical() {
       icon: <ClipboardDocumentListIcon className="w-6 h-6 text-white" />,
       bg: "#fb844a",
       isSpecial: true,
-      route: "/admin/votacaoMusical",
+      route: "/voting/vote",
       roleRequired: "jurado",
     },
     {
       title: "Artistas",
       description: "Gerenciar Artistas",
-      icon: <MusicalNoteIcon className="w-6 h-6 text-pink-900" />,
+      icon: <UserIcon className="w-6 h-6 text-pink-900" />,
       bg: "#ffeac9",
       route: "/admin/artistas",
+    },
+    {
+      title: "Músicas",
+      description: "Gerenciar Artistas",
+      icon: <MusicalNoteIcon className="w-6 h-6 text-pink-900" />,
+      bg: "#ffeac9",
+      route: "/admin/musicas",
+    },
+    {
+      title: "Gerar QRCodes",
+      description: "Gerenciar QRCodes",
+      icon: <QrCodeIcon className="w-6 h-6 text-pink-900" />,
+      bg: "#ffeac9",
+      route: "/admin/gerar-qrcodes-musical",
+      roleRequired: "administrador",
     },
     {
       title: "Jurados",
@@ -62,12 +80,12 @@ export default function MenuMusical() {
       <div className="flex flex-col justify-start items-center py-6 px-5">
         <div className="w-full max-w-3xl">
           <motion.div className="flex items-center gap-3 mb-6" {...fadeUpTitle}>
-            <img
-              src={returnIcon}
-              alt="Voltar"
-              className="w-8 h-8 cursor-pointer"
+            <Button
               onClick={() => window.history.back()}
-            />
+              className="bg-[#FB844A] rounded-md px-1.5 py-0.5 text-white text-sm flex items-center w-10 min-w-0"
+            >
+              <ChevronLeftIcon className="w-5 h-5" />
+            </Button>
             <h1 className="text-3xl font-bold text-[#fee9c9] font-title">
               Festival Musical
             </h1>
@@ -83,6 +101,7 @@ export default function MenuMusical() {
                 whileHover="whileHover"
                 whileTap={cardVariants.whileTap}
                 custom={index}
+                onClick={() => navigate(item.route)}
               >
                 <Card
                   className="hover:shadow-lg cursor-pointer p-4 flex items-left relative"

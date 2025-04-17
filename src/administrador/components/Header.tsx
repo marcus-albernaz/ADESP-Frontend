@@ -8,7 +8,7 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
-  const userName = "João Silva";
+  const userName = "Marcus Albernaz"; // Traga apenas o primeiro e último nome... fica melhor neste componente
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
