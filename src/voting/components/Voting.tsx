@@ -60,7 +60,7 @@ export default function Voting({ onNavigate, formRegister, submitHandler }: Vote
   const categoria = 1;
 
   const perguntasPorCategoria: Record<number, string[]> = {
-    1: ["Sabor", "Criatividade", "Apresentação", "Originalidade", "Atendimento"],
+    1: ["Sabor", "Criatividade", "Apresentação do prato", "Originalidade", "Atendimento"],
     2: ["Composição", "Melodia", "Interpretação", "Conjunto da Obra"]
   };
 

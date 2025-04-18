@@ -7,7 +7,7 @@ interface Descrition{
 
 export const Descrition: React.FC<Descrition> = ({owner,desc, className}) => {
     return (
-      <div className={`${className} bg-[#fa8448] rounded-full shadow-xl`}>
+      <div className={`${className} rounded-full shadow-xl`}>
         <p className=" "> {desc} • {owner}</p>
       </div>
     );
