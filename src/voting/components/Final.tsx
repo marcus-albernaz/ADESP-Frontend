@@ -3,6 +3,7 @@ import confetti from "canvas-confetti";
 import imgVotation2 from "../assets/votation2.png";
 import Footer from "./Footer";
 import logo from "/Logo_Festival1.png";
+import { Button } from "@heroui/button";
 
 export default function Final() {
   useEffect(() => {
@@ -14,7 +15,7 @@ export default function Final() {
   }, []);
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#FA925F] font-space">
+    <div className="flex flex-col min-h-screen bg-[#2B1E49] font-space">
       <main className="flex flex-col items-center justify-center flex-grow px-4 text-center">
         {/* Logo do Festival */}
         <img src={logo} alt="Logo do Festival" className="w-60 mb-6" />
@@ -24,20 +25,21 @@ export default function Final() {
 
         {/* Mensagem de agradecimento */}
         <div className="w-full max-w-md space-y-6">
-          <h1 className="text-4xl font-bold font-title text-black">
+          <h1 className="text-4xl font-bold font-title text-[#F1E9CE]">
             Voto registrado!
           </h1>
-          <p className="text-xl font-title text-white">
+          <p className="text-xl font-title text-[#F1E9CE]">
             Obrigado por seu voto!<br />
             Agora, você pode deixar a votação, mas que tal conhecer mais do festival? Clique no botão abaixo!
           </p>
 
-          <button
+          <Button
             onClick={() => window.location.href = "https://www.instagram.com/festivalculturaldeparacatu/"}
-            className="w-full py-3 font-medium text-white bg-[#2b1e4a] hover:bg-[#1e1436] transition duration-200 rounded-md"
+            className="w-[90%] py-6 font-medium text-xl text-white bg-[#FD8349] rounded-md"
+
           >
             Quero Conhecer o Festival!
-          </button>
+          </Button>
         </div>
       </main>
 

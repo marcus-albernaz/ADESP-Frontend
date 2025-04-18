@@ -74,7 +74,7 @@ export default function Access({ onNavigate, formRegister }: AccessScreenPropTyp
   };
 
   return (
-    <div className="flex flex-col min-h-screen relative bg-[#FA925F] text-black">
+    <div className="flex flex-col min-h-screen relative bg-[#2B1E49] text-black">
       <Header />
 
       <div className="flex flex-col flex-grow items-center justify-center text-center px-4">
@@ -89,10 +89,10 @@ export default function Access({ onNavigate, formRegister }: AccessScreenPropTyp
           className="w-full max-w-md text-left space-y-4 mt-6"
           {...fadeUpTitle}
         >
-          <h1 className="text-4xl text-center font-title font-bold">
+          <h1 className="text-4xl text-center font-title font-bold text-[#F1E9CE]">
             Estávamos esperando por você!
           </h1>
-          <p className="text-md text-center font-title font-semibold">
+          <p className="text-md text-center font-title font-semibold text-[#F1E9CE]">
             Que bom que você veio votar! Preencha os campos abaixo e confirme para seguir com a votação.
           </p>
 
@@ -111,7 +111,7 @@ export default function Access({ onNavigate, formRegister }: AccessScreenPropTyp
               {...formRegister("cpf")}
               onChange={(e) => setCpf(maskCPF(e.target.value))}
             />
-            {cpfError && <p className="text-sm mt-1 text-[#7B0000]">{cpfError}</p>}
+            {cpfError && <p className="text-sm mt-1 text-[#da1719]">{cpfError}</p>}
           </div>
 
           {/* Nome */}
@@ -133,7 +133,7 @@ export default function Access({ onNavigate, formRegister }: AccessScreenPropTyp
                 setNome(onlyLetters);
               }}
             />
-            {nomeError && <p className="text-sm mt-1 text-[#7B0000]">{nomeError}</p>}
+            {nomeError && <p className="text-sm mt-1 text-[#da1719]">{nomeError}</p>}
           </div>
 
           {/* Telefone */}
@@ -151,14 +151,14 @@ export default function Access({ onNavigate, formRegister }: AccessScreenPropTyp
               {...formRegister("contactNumber")}
               onChange={(e) => setTelefone(maskPhone(e.target.value))}
             />
-            {telefoneError && <p className="text-sm mt-1 text-[#7B0000]">{telefoneError}</p>}
+            {telefoneError && <p className="text-sm mt-1 text-[#da1719]">{telefoneError}</p>}
           </div>
 
           {/* Botão Confirmar */}
           <Button
             type="button"
             onPress={handleSubmit}
-            className="w-full bg-[#2B1E49] text-white font-title hover:bg-[#201636] transition-colors duration-200"
+            className="w-full bg-[#FD8349] text-white font-title transition-colors duration-200 rounded-md"
             radius="none"
           >
             Confirmar!

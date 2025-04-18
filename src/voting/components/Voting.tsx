@@ -1,70 +1,53 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "./Header";
-import { Descrition } from "./Descrition";
-import "../styles/range.css";
-import returnImg from "../assets/return.png";
-import { VoteRequest, VoteScreenPropTypes } from "../types";
-import { UseFormRegister, UseFormRegisterReturn } from "react-hook-form";
-import castStringToLiteral from "../services/castStringToLiteral";
+import { Descrition } from "../components/Descrition";
+import { VoteScreenPropTypes } from "../types";
+import { Button, Slider } from '@heroui/react'; // Importando o Slider do HeroUI
+import { UseFormRegisterReturn } from "react-hook-form";
+import { ChevronLeftIcon } from "@heroicons/react/24/outline";
+import { motion } from "framer-motion"; // Importando motion do framer-motion
 
-const VALOR_INICIAL = 7.50;
+const VALOR_INICIAL = 0;
 
 function RatingInput({
   label,
   initialValue,
   onChange,
-  formRegister
+  formRegister,
 }: {
   label: string;
   initialValue: number;
   onChange: (value: number) => void;
-  formRegister: UseFormRegisterReturn<string>
+  formRegister: UseFormRegisterReturn<string>;
 }) {
   const [value, setValue] = useState(initialValue);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let valStr = e.target.value.replace(".", ",");
-
-    if (valStr === "") {
-      setValue(0);
-      onChange(0);
-      return;
-    }
-
-    const parsed = parseFloat(valStr.replace(",", "."));
-
-    if (!isNaN(parsed)) {
-      const boundedVal = Math.min(Math.max(parsed, 0), 10);
-      setValue(boundedVal);
-      onChange(boundedVal);
-    }
+  const handleChange = (newValue: number) => {
+    setValue(newValue);
+    onChange(newValue);
   };
 
   return (
-    <div className="w-full">
-      <label className="block text-white font-semibold mb-2">{label}</label>
-      <div className="flex items-center gap-4">
-        <input
-          type="range"
-          min="0"
-          max="10"
-          step="0.01"
-          {...formRegister}
-          value={value}
-          onChange={handleChange}
-          className="w-full h-2 appearance-none bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 rounded-lg"
-        />
-        <input
-          type="number"
-          step="0.01"
-          min="0"
-          max="10"
-          value={value}
-          onChange={handleChange}
-          className="w-20 p-2 rounded-xl bg-white text-black text-center font-bold shadow-md"
-        />
+    <div className="w-full mb-6">
+      {/* Nome do critério e caixinha de valor */}
+      <div className="flex items-center justify-between mb-2">
+        <label className="block text-black font-semibold">{label}</label>
+        {/* Caixinha de valor */}
+        <div className="p-2 bg-[#FB844A] text-white rounded-md w-16 text-center">
+          {value.toFixed(2)}
+        </div>
       </div>
+
+      {/* Slider */}
+      <Slider
+        value={value}
+        minValue={0}
+        maxValue={10}
+        step={0.01}
+        onChange={handleChange}
+        className="w-full"
+        aria-label={label} // ✅ Aqui está a solução!
+      />
     </div>
   );
 }
@@ -74,10 +57,10 @@ export default function Voting({ onNavigate, formRegister, submitHandler }: Vote
 
   const lugar = "Restaurante Araguaia";
   const prato = "Lasanha";
-  const categoria = 2;
+  const categoria = 1;
 
   const perguntasPorCategoria: Record<number, string[]> = {
-    1: ["Sabor", "Apresentação", "Criatividade", "Originalidade", "Atendimento"],
+    1: ["Sabor", "Criatividade", "Apresentação", "Originalidade", "Atendimento"],
     2: ["Composição", "Melodia", "Interpretação", "Conjunto da Obra"]
   };
 
@@ -99,88 +82,101 @@ export default function Voting({ onNavigate, formRegister, submitHandler }: Vote
   const todosForamAlterados = alterados.every(Boolean);
 
   const handleSubmit = () => {
-    submitHandler();
-    navigate("/vote/final");
+    const resultados = criterios.map((criterio, index) => ({
+      criterio,
+      nota: notas[index].toFixed(2),
+    }));
+  
+    console.table(resultados);
+  
+    {/*submitHandler();*/}
+    navigate("/voting/final");
   };
+  
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#2B1E49] font-sans">
-      <Header />
-
-      <main className="flex flex-col items-center px-4 py-10 sm:py-12 md:py-16 lg:py-20 bg-[#2B1E49] flex-grow w-full">
-        {/* Cabeçalho com botão de voltar */}
-        <div className="w-full max-w-2xl flex items-center justify-between mb-6">
-          <div className="flex items-center gap-3 mt-3 w-full justify-start max-w-2xl mb-4">
-            <button
-              onClick={() => onNavigate("initial")}
-              className="hover:opacity-80"
+    <div className="flex flex-col min-h-screen bg-[#2b1e49] font-sans">
+      <main className="flex flex-col items-center px-4 py-7 sm:py-12 md:py-16 lg:py-20 flex-grow w-full">
+        <div className="w-full max-w-2xl flex items-center justify-between mb-3">
+          <div className="flex items-center gap-3 mt-3 w-full justify-start max-w-2xl mb-3">
+            <Button
+              onClick={() => window.history.back()}
+              className="bg-[#FB844A] rounded-md px-1.5 py-0.5 text-white text-sm flex items-center w-10 min-w-0"
             >
-              <img
-                src={returnImg}
-                alt="Voltar"
-                className="h-8 w-8"
-              />
-            </button>
-            <h1 className="text-3xl sm:text-4xl font-bold text-[#FFEAC9]">
-              Voto
-            </h1>
+              <ChevronLeftIcon className="w-5 h-5" />
+            </Button>
+            <h1 className="text-4xl font-bold text-[#fee9c9] font-title">Votação</h1>
           </div>
-
           <div className="w-1/5"></div>
         </div>
 
-        {/* Informações do voto */}
-        <section className="w-full max-w-2xl text-white text-center mb-8">
-          <h3 className="text-base sm:text-lg font-light mb-1">
+        <section className="w-full text-center mb-3">
+          <motion.h3
+            className="text-[#ffffff] text-xl font-light mb-1"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
             Você está votando em:
-          </h3>
-          <Descrition owner={lugar} desc={prato} className="text-white" />
+          </motion.h3>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
+            <Descrition
+              owner={lugar}
+              desc={prato}
+              className="w-full max-w-2xl py-0.5 rounded-md text-white text-lg font-semibold bg-[#7728c7] mx-auto"
+            />
+          </motion.div>
         </section>
 
-        {/* Formulário de notas */}
-        <section className="w-full max-w-2xl bg-[#3A2D5D] p-6 rounded-2xl shadow-xl space-y-8">
-            <RatingInput
-              label={"Atendimento"}
-              initialValue={VALOR_INICIAL}
-              onChange={(value) => handleNotaChange(0, value)}
-              formRegister={formRegister("treatment")}
-            />
-            <RatingInput
-              label={"Apresentação"}
-              initialValue={8}
-              onChange={(value) => handleNotaChange(1, value)}
-              formRegister={formRegister("presentation")}
-            />
-            <RatingInput
-              label={"Criatividade"}
-              initialValue={VALOR_INICIAL}
-              onChange={(value) => handleNotaChange(2, value)}
-              formRegister={formRegister("creativity")}
-            />
-            <RatingInput
-              label={"Originalidade"}
-              initialValue={VALOR_INICIAL}
-              onChange={(value) => handleNotaChange(3, value)}
-              formRegister={formRegister("originality")}
-            />
-            <RatingInput
-              label={"Sabor"}
-              initialValue={VALOR_INICIAL}
-              onChange={(value) => handleNotaChange(4, value)}
-              formRegister={formRegister("flavor")}
-            />
-          <button
+        <section className="w-full max-w-2xl bg-white p-6 rounded-2xl shadow-xl space-y-8">
+          {criterios.map((criterio, index) => (
+            <motion.div
+              key={criterio}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
+            >
+              <RatingInput
+                label={criterio}
+                initialValue={VALOR_INICIAL}
+                onChange={(value) => handleNotaChange(index, value)}
+                formRegister={formRegister(criterio.toLowerCase() as any)}
+              />
+            </motion.div>
+          ))}
+        </section>
+
+        {todosForamAlterados && (
+          <motion.p
+            className="text-sm text-white text-center mt-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+          >
+            Atenção! Esse voto não poderá ser editado após envio.
+          </motion.p>
+        )}
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.6 }}
+        >
+          <Button
             onClick={handleSubmit}
             disabled={!todosForamAlterados}
-            className={`w-full py-3 text-lg font-semibold text-white rounded-xl transition-all duration-300 ${todosForamAlterados
-              ? "bg-[#FB844A] hover:bg-[#D16E3E] animate-pulse"
-              : "bg-[#2B1E49] opacity-50 cursor-not-allowed"
+            className={`w-full py-7 text-lg font-semibold text-black rounded-xl mt-5 ${!todosForamAlterados
+              ? "bg-[#DEDEDE] cursor-not-allowed opacity-60"
+              : "bg-[#fb844a] animate-pulse"
               }`}
           >
-            {todosForamAlterados ? "Enviar Voto" : "Preencha todos os quesitos"}
-          </button>
-
-        </section>
+            {!todosForamAlterados ? "Preencha todos os quesitos" : "Enviar Voto"}
+          </Button>
+        </motion.div>
       </main>
     </div>
   );

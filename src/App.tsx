@@ -26,6 +26,13 @@ import { useState } from "react";
 import Vote from "./voting/pages/Vote";
 import EditarPrato from "./administrador/components/GerenciarPrato/EditarPrato"
 import EditarEstabelecimento from "./administrador/components/GerenciarEstabelecimento/EditarEstabelecimento"
+import { Rating } from '@smastrom/react-rating';
+import '@smastrom/react-rating/style.css';
+import 'primereact/resources/themes/saga-purple/theme.css';  // ou outro tema de sua preferência
+import 'primereact/resources/primereact.min.css';
+import 'primeicons/primeicons.css';
+
+
 
 function App() {
 
@@ -39,6 +46,7 @@ function App() {
     console.log(`Gerando ${quantidade} QRCodes para o restaurante ${restauranteId}`);
   };
 
+  
   return (
     <AuthProvider>
       <Routes>
